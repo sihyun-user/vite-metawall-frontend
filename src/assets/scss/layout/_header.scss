@@ -1,0 +1,100 @@
+header {
+  width: 100%;
+  height: 60px;
+  background-color: $color-white;
+  border-bottom: 3px solid #000400;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  nav {
+    width: 870px;
+    max-width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  h1 {
+    font-size: 26px;
+    font-weight: $regular;
+    font-family: 'Paytone One', sans-serif;
+  }
+
+  .user-wrap {
+    position: relative;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+    &:hover .user-wrap__listBox {
+      display: block;
+    }
+
+    &__photo {
+      width: 30px;
+      height: 30px;
+      border: 2px solid $color-primary;
+      border-radius: 100%;
+      margin-right: 10px;
+    }
+
+    &__name {
+      font-weight: $bold;
+
+      &::after {
+        content: '';
+        display: block;
+        border-bottom: 2px solid $color-primary;
+        margin-top: 5px;
+      }
+    }
+
+    &__listBox {
+      display: none;
+    }
+
+    &__list {
+      width: 180px;
+      font-weight: $regular;
+      border: 2px solid $color-primary;
+      background-color: $color-white;
+      position: absolute;
+      left: 0;
+      top: 40px;
+      z-index: 99;
+
+      & li {
+        height: 40px;
+        line-height: 38px;
+        text-align: center;
+
+        a {
+          display: block;
+        }
+
+        &:not(:last-of-type) {
+          border-bottom: 2px solid $color-primary;
+        }
+
+        &:hover {
+          background-color: $color-gray-2;
+        }
+      }
+
+      &-bg {
+        width: 180px;
+        height: 117px;
+        font-weight: $regular;
+        border: 2px solid $color-primary;
+        background-color: $color-white;
+        position: absolute;
+        left: 6px;
+        top: 45px;
+        z-index: 1;
+      }
+    }
+  }
+}

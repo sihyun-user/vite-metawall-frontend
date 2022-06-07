@@ -1,0 +1,60 @@
+.follow {
+  .user {
+    position: relative;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    &__info {
+      display: flex;
+  
+      &-photo {
+        width: 45px;
+        height: 45px;
+        border-radius: 100%;
+        border: 2px solid $color-primary;
+        margin-right: 15px;
+
+        @include mobile {
+          margin-right: 6px;
+        }
+      }
+  
+      &-wrap { 
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      &-name {
+        a {
+          line-height: 1.4;
+          font-weight: $bold;
+  
+          &:hover {
+            color: $color-secondary;
+            text-decoration: underline;
+          }
+        }
+      }
+
+      &-time {
+        font-size: 14px;
+        font-weight: $regular;
+        color: #9B9893;
+      }
+    }
+
+    &__time {
+      font-size: 16px;
+      font-weight: $regular;
+
+      @include mobile {
+        position: absolute;
+        top: 18px;
+        right: 8px;
+      }
+    }
+  }
+}

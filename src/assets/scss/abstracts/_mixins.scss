@@ -1,0 +1,50 @@
+@mixin mobileS {
+  @media (max-width: $mobileS) {
+    @content;
+  }
+}
+
+@mixin mobileM {
+  @media (max-width: $mobileM) {
+    @content;
+  }
+}
+
+@mixin mobileL {
+  @media (max-width: $mobileL) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media (max-width: $mobile) {
+    @content;
+  }
+}
+
+@mixin pad {
+  @media (max-width: $pad) {
+    @content;
+  }
+}
+
+@mixin ipadPro {
+  @media (min-height: 1194px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (max-width: $desktop) {
+    @content;
+  }
+}
+
+@mixin baseCard($padding:0px) {
+  width: 100%;
+  border-radius: 8px;
+  border: 2px solid $color-primary;
+  background-color: $color-white;
+  box-shadow: 0px 3px 0px $color-primary;
+  padding: $padding;
+}

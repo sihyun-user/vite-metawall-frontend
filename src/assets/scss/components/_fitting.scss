@@ -1,0 +1,82 @@
+// input text
+.inputMode {
+  font-size: 16px;
+  color: $color-primary;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  border: 2px solid $color-primary;
+  padding: 14px 18px;
+
+  &::placeholder {
+    font-size: 16px;
+  }
+}
+
+// 用戶頭貼資訊組件
+.userHeader {
+  display: flex;
+
+  &__photo {
+    overflow: hidden;
+    width: 45px;
+    height: 45px;
+    border-radius: 100%;
+    border: 2px solid $color-primary;
+    margin-right: 15px;
+  }
+
+  &__wrap { 
+    a {
+      line-height: 1.4;
+      font-weight: $bold;
+
+      &:hover {
+        color: $color-secondary;
+        text-decoration: underline;
+      }
+    }
+
+    span {
+      font-size: 12px;
+      color: #9B9893;
+      font-weight: $regular;
+    }
+  }
+}
+
+.caption {
+  position: relative;
+  margin-bottom: 20px;
+
+  &-text {
+    font-size: 20px;
+    font-weight: $bold;
+    height: 70px;
+    line-height: 70px;
+    border: 2px solid $color-primary;
+    background-color: $color-white;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  &-bg {
+    width: 100%;
+    height: 100%;
+    border: 2px solid $color-primary;
+    background-color: $color-white;
+    position: absolute;
+    left: -6px;
+    bottom: -7px;
+    z-index: 1;
+  }
+}
+
+.card {
+  @include baseCard(24px);
+
+  @include mobile {
+    @include baseCard(16px 14px);
+  }
+}

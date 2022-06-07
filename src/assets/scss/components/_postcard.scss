@@ -1,0 +1,128 @@
+.post {
+  margin-bottom: 15px;
+
+  &__content {
+    margin: 15px 0 20px;
+
+    &-text {
+      line-height: 1.6;
+      font-weight: $regular;
+      margin-bottom: 15px;
+    }
+
+    &-img {
+      width: 100%;
+      border: 2px solid $color-primary;
+      border-radius: 8px;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        height: 400px;
+        display: block;
+        object-fit: cover;
+        object-position: center;
+      }
+    }
+  }
+
+  &__state {
+    font-weight: $regular;
+    display: flex;
+
+    & i {
+      font-size: 20px;
+      color: $color-secondary;
+      margin-right: 8px;
+    }
+
+    &-like,
+    &-msg {
+      cursor: pointer;
+      margin-right: 20px;
+    }
+  }
+
+  &__writeComment {
+    height: 40px;
+    margin: 20px 0;
+    display: flex;
+
+    &-photo {
+      min-width: 40px;
+      border-radius: 100%;
+      border: 2px solid $color-primary;
+      margin-right: 8px;
+    }
+
+    &-wrap { 
+      width: 100%;
+      border: 2px solid $color-primary;
+      display: flex;
+  
+      input {
+        font-size: 16px;
+        width: calc(100% - 30%);
+        padding: 0 16px;
+      }
+  
+      button {
+        font-size: 16px;
+        font-weight: $medium;
+        width: 30%;
+        color: $color-white;
+        background-color: $color-secondary;
+        border-left: 2px solid $color-primary;
+        cursor: pointer;
+
+        &:hover {
+          color: $color-primary;
+          background-color: $color-yellow;
+        }
+      }
+    }
+  }
+
+  &__commentItem {
+    background-color: $color-gray-2;
+    padding: 18px 16px;
+    display: flex;
+
+    &:not(:last-of-type) {
+      margin-bottom: 15px;
+    }
+
+    &-row {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &-photo {
+      width: 45px;
+      height: 45px;
+      border-radius: 100%;
+      border: 2px solid $color-primary;
+      margin-right: 15px;
+    }
+
+    &-info { 
+      margin-bottom: 10px;
+      
+      h3 {
+        line-height: 1.4;
+        font-weight: $bold;
+      }
+
+      span {
+        font-size: 12px;
+        color: #9B9893;
+        font-weight: $regular;
+      }
+    }
+
+    &-text {
+      line-height: 1.6;
+      font-weight: $regular;
+    }
+  }
+}

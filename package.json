@@ -3,14 +3,20 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "start": "node server.js",
+    "dev": "vite --mode development",
+    "build": "vite build --mode production",
     "preview": "vite preview",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
     "format": "prettier .  --write"
   },
   "dependencies": {
+    "axios": "^0.27.2",
+    "core-js": "^3.22.8",
+    "express": "^4.18.1",
+    "moment": "^2.29.3",
     "vue": "^3.2.25",
+    "vue-axios": "^3.4.1",
     "vue-router": "^4.0.13",
     "vuex": "^4.0.2"
   },
