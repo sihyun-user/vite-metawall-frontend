@@ -98,3 +98,10 @@
     @include baseCard(16px 14px);
   }
 }
+
+.no-post {
+  @include baseCard(40px 25px);
+  font-weight: $regular;
+  color: #9B9893;
+  text-align:center;
+}

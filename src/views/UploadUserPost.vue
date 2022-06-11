@@ -29,8 +29,8 @@
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { checkConsole } from '../service/helpers'
 import axios from 'axios'
-import handleService from '../service/helpers'
 import BaseCaption from '../components/ui/BaseCaption.vue'
 import BaseCard from '../components/ui/BaseCard.vue'
 export default {
@@ -88,7 +88,7 @@ export default {
         if (!response.status) throw Error
 
         imageLink.value = response.data.data.url
-        handleService.checkConsole('上傳貼文圖片成功', response.data)
+        checkConsole('上傳貼文圖片成功', response.data)
 
         return 'ok'
       } catch (error) {
@@ -114,7 +114,7 @@ export default {
 
         alert('貼文創建成功')
         router.push('/posts-wall')
-        handleService.checkConsole('創建貼文成功', response.data)
+        checkConsole('創建貼文成功', response.data)
       } catch (error) {
         alert('系統忙碌中，請稍後再試')
         store.commit('setIsLoading', false)

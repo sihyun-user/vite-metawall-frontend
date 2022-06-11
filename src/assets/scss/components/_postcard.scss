@@ -53,6 +53,11 @@
       border-radius: 100%;
       border: 2px solid $color-primary;
       margin-right: 8px;
+      overflow: hidden;
+
+      img {
+        width: 40px;
+      }
     }
 
     &-wrap { 
@@ -83,46 +88,28 @@
     }
   }
 
+  &__no-comment {
+    text-align: center;
+    padding: 15px 0;
+  }
+
   &__commentItem {
     background-color: $color-gray-2;
     padding: 18px 16px;
     display: flex;
+    flex-direction: column;
 
     &:not(:last-of-type) {
       margin-bottom: 15px;
     }
 
     &-row {
-      display: flex;
-      flex-direction: column;
-    }
+      margin-left: 60px;
+      margin-top: 10px;
 
-    &-photo {
-      width: 45px;
-      height: 45px;
-      border-radius: 100%;
-      border: 2px solid $color-primary;
-      margin-right: 15px;
-    }
-
-    &-info { 
-      margin-bottom: 10px;
-      
-      h3 {
-        line-height: 1.4;
-        font-weight: $bold;
+      p {
+        line-height: 1.6;
       }
-
-      span {
-        font-size: 12px;
-        color: #9B9893;
-        font-weight: $regular;
-      }
-    }
-
-    &-text {
-      line-height: 1.6;
-      font-weight: $regular;
     }
   }
 }

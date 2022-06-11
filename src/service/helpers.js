@@ -1,6 +1,6 @@
 const isShowConsole = import.meta.env.VITE_APP_ISSHOWCONSOLE
 
-const checkConsole = (text, response) => {
+export const checkConsole = (text, response) => {
   if (isShowConsole === 'true') {
     console.log(text, response)
   } else {
@@ -8,6 +8,3 @@ const checkConsole = (text, response) => {
   }
 }
 
-export default {
-  checkConsole
-}

@@ -1,12 +1,11 @@
 <template>
   <div class="userHeader">
     <div class="userHeader__photo">
-      <img :src="photo" v-if="photo !== ''">
-      <img src="/src/assets/img/user_default.jpg" v-else>
+      <base-userPhoto :userPhoto="user.photo"></base-userPhoto>
     </div>
     <div class="userHeader__wrap">
       <h3 class="userHeader__name">
-        <router-link to="/">{{ name }}</router-link>
+        <router-link :to="userWallLink">{{ name }}</router-link>
       </h3>
       <span class="userHeader__time">{{ createdTime }}</span>
     </div>
@@ -16,17 +15,26 @@
 <script>
 import { computed, toRefs } from 'vue'
 import moment from 'moment'
+import BaseUserPhoto from '../ui/BaseUserPhoto.vue'
 export default {
+  components: {
+    BaseUserPhoto
+  },
   props: ['user', 'createdAt'],
   setup(props) {
-    const { name, photo } = toRefs(props.user);
+    const { _id, name, photo } = toRefs(props.user);
 
     const createdTime = computed(() => moment(props.createdAt).format('YYYY/MM/DD HH:mm'))
+
+    const userWallLink = computed(() => {
+      return `/user-wall?userId=${_id.value}`
+    })
 
     return {
       name,
       photo,
-      createdTime
+      createdTime,
+      userWallLink
     }
   }
 }

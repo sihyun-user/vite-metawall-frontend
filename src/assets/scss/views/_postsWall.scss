@@ -2,11 +2,4 @@
   .filter {
     margin-bottom: 15px;
   }
-
-  .no-post {
-    @include baseCard(40px 25px);
-    font-weight: $regular;
-    color: #9B9893;
-    text-align:center;
-  }
 }

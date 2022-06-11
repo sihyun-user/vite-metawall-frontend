@@ -3,12 +3,14 @@
     <div class="story-list__row">
       <router-link to="/upload-userpost" class="baseBlueBtn story-list__btn">張貼動態</router-link>
       <ul class="story-list__wrap">
-        <li class="story-list__mode" :class="{active:route.path=='/user-wall'}">
-          <router-link to="/user-wall">
+        <li class="story-list__mode" v-if="hasUserInfo"
+          :class="{active:route.path=='/user-wall'}"
+        >
+          <router-link :to="curUserWallLink">
             <div class="story-list__mode-row">
-              <!-- <img src=""> -->
+              <base-userPhoto :userPhoto="userInfo.photo"></base-userPhoto>
             </div>
-            <h3 class="story-list__mode-name">工程師皮卡</h3>
+            <h3 class="story-list__mode-name">{{ userInfo.name }}</h3>
           </router-link>
         </li>
         <li class="story-list__mode" :class="{active:route.path=='/user-follow'}">
@@ -33,13 +35,30 @@
 </template>
 
 <script>
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
+import BaseUserPhoto from './ui/BaseUserPhoto.vue'
 export default {
+  components: {
+    BaseUserPhoto
+  },
   setup () {
     const route = useRoute()
+    const store = useStore()
+
+    const hasUserInfo = computed(() => store.getters.hasUserInfo)
+    const userInfo = computed(() => store.getters.userInfo)
+
+    const curUserWallLink = computed(() => {
+      return `/user-wall?userId=${store.getters.userId}`
+    })
 
     return {
-      route
+      route,
+      userInfo,
+      hasUserInfo,
+      curUserWallLink
     }
   }
 }

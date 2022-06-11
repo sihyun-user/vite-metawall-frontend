@@ -27,7 +27,6 @@
     margin-bottom: 15px;
 
     &:hover {
-
       .story-list__mode-row {
         background-color: $color-secondary;
   
@@ -55,8 +54,8 @@
       border-radius: 100%;
       border: 2px solid $color-primary;
       margin-right: 15px;
+      overflow: hidden;
       
-
       & i {
         font-size: 20px;
       }

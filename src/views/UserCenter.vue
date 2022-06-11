@@ -14,12 +14,18 @@
 </template>
 
 <script>
+import { useStore } from 'vuex'
 import TheHeader from '../components/layout/TheHeader.vue'
 import StoryList from '../components/StoryList.vue'
 import StoryStatusBar from '../components/StoryStatusBar.vue'
 export default {
   components: {
     TheHeader, StoryList, StoryStatusBar
+  },
+  setup() {
+    const store = useStore()
+
+    store.dispatch('getUserInfo')
   }
 }
 </script>

@@ -1,21 +1,23 @@
 <template>
   <section class="posts-wall">
-    <post-filter class="filter" @filter-posts='searchPosts'></post-filter>
+    <div class="no-post" v-if="posts && posts.length==0">目前尚無動態，新增一則貼文吧！</div>
 
-    <section v-if="!isLoading">
-      <div class="no-post" v-if="posts.length==0">目前尚無動態，新增一則貼文吧！</div>
-      <post-card v-else v-for="post in posts"
+    <section v-else>
+      <post-filter class="filter" @filter-posts='searchPosts'></post-filter>
+      <post-card v-for="post in posts"
       :key="post._id"
+      :postId="post._id"
       :user="post.user"
       :likes="post.likes"
       :content="post.content"
       :postImage="post.image"
+      :comments="post.comments"
       :createdAt="post.createdAt"
       >
       </post-card>
     </section>
 
-    <base-spinner v-else></base-spinner>
+    <base-spinner v-if="isLoading"></base-spinner>
   </section>
 </template>
 

@@ -43,7 +43,6 @@ const router = createRouter({
 
 router.beforeEach(function(to, _, next){
   const isLiginCall = store.getters.isLogin
-  console.log(isLiginCall)
   if (to.meta.requiresAuth && !isLiginCall) {
     alert('尚未登入')
     next('/auth')

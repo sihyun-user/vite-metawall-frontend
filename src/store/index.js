@@ -1,12 +1,15 @@
 import { createStore } from 'vuex'
 import router from '../router/index'
 import axios from 'axios'
-import handleService from '../service/helpers'
+import { checkConsole } from '../service/helpers'
+import createPersistedState from 'vuex-persistedstate'
 
 export default createStore({
+  plugins: [createPersistedState()],
   state: {
     token: null,
     userId: null,
+    userInfo: {},
     isLogin: false,
     isLoading: false,
     errorMsg: ''
@@ -20,11 +23,20 @@ export default createStore({
       state.userId = payload.userId
       // state.didAutoLogout = false
     },
+    setUserInfo(state, payload) {
+      state.userInfo = payload
+    },
     setIsLoading(state, payload) {
       return state.isLoading = payload
     },
     setErrorMag(state, payload) {
       return state.errorMsg = payload
+    },
+    clearInfo(state) {
+      state.isLogin = false
+      state.token = false
+      state.userId = false
+      state.userInfo = {}
     }
   },
   actions: {
@@ -47,13 +59,14 @@ export default createStore({
         })
 
         context.commit('setIsLoading', false)
-        handleService.checkConsole('登入成功', res.data)
+        checkConsole('登入成功', res.data)
         router.push('posts-wall')
         alert('登入成功')
       } catch (err) {
         const message = err.response.data.message
         context.commit('setIsLoading', false)
         context.commit('setErrorMag', `登入失敗，${message}`)
+        checkConsole('登入失敗', err.response)
       }
     },
     async signup(context, payload) {
@@ -68,13 +81,31 @@ export default createStore({
         })
 
         context.commit('setIsLoading', false)
-        handleService.checkConsole('註冊成功', res.data)
+        checkConsole('註冊成功', res.data)
         alert('註冊成功,請重新登入')
         return true
       } catch (err) {
         const message = err.response.data.message
         context.commit('setIsLoading', false)
         context.commit('setErrorMag', `註冊失敗，${message}`)
+        checkConsole('註冊失敗', err.response)
+      }
+    },
+    async getUserInfo(context) {
+      try {
+        const api = `${import.meta.env.VITE_APP_API}/api/user/profile`
+        
+        const res = await axios.get(api, {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+        context.commit('setUserInfo', res.data.data.user)
+        checkConsole('取得會員資料成功', res.data)
+        return res.data.data
+      } catch (error) {
+        context.commit('setIsLoading', false)
+        checkConsole('取得會員資料失敗', res.data)
       }
     },
     async getPosts(context, payload) {
@@ -86,27 +117,64 @@ export default createStore({
         const res = await axios.get(api, {
           headers: {
             Authorization: `Bearer ${context.getters.token}`
-      }
+          }
         })
+
+        checkConsole('取得貼文列表成功', res.data)
         context.commit('setIsLoading', false)
-  
         return res.data.data
-      } catch (error) {
-        console.log(error)
+      } catch (err) {
         context.commit('setIsLoading', false)
+        checkConsole('取得貼文列表失敗', err.response)
         alert('系統忙碌中，請稍後再試')
+      }
+    },
+    async getUserPosts(context, payload) {
+      try {
+        context.commit('setIsLoading', true)
+
+        const api = `${import.meta.env.VITE_APP_API}/api/user/profile/${payload.userId}`
+        const res = await axios.get(api, {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+
+        context.commit('setIsLoading', false)
+        checkConsole('取得個人貼文列表成功', res.data)
+        return res.data.data
+      } catch (err) {
+        context.commit('setIsLoading', false)
+        checkConsole('取得個人貼文列表失敗', err.response)
+        router.replace('posts-wall')
+        alert('目前無法查看此內容，查無使用者或系統忙碌中')
+      }
+    },
+    //todo: 即時留言更新
+    async addPostComment(context, payload) {
+      try {
+        const api = `${import.meta.env.VITE_APP_API}/api/post/${payload.postId}/comment`
+
+        const paramData = {
+          comment: payload.comment
+        }
+
+        const res = await axios.post(api, paramData, {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+
+        checkConsole('新增貼文的留言成功', res.data)
+      } catch (err) {
+        checkConsole('新增貼文的留言失敗', err.response)
       }
     },
     logout(context) {
       localStorage.removeItem('token')
       localStorage.removeItem('userId')
       
-      context.commit('isLogin', false)
-      context.commit('setUser', {
-        token: null,
-        userId: null
-      })
-
+      context.commit('clearInfo')
       router.replace('/auth')
     },
     tryLogin(context) {
@@ -128,6 +196,12 @@ export default createStore({
     },
     token(state) {
       return state.token
+    },
+    hasUserInfo(state) {
+      return state.userInfo._id
+    },
+    userInfo(state) {
+      return state.userInfo
     },
     isLogin(state) {
       return state.isLogin
