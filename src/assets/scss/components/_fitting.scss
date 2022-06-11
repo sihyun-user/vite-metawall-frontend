@@ -1,3 +1,15 @@
+// mask
+.maskMode {
+  width: 100%;
+  min-height: 100vh;
+  background-color: $color-black;
+  opacity: 0.2;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
 // input text
 .inputMode {
   font-size: 16px;
@@ -11,6 +23,12 @@
   &::placeholder {
     font-size: 16px;
   }
+}
+
+.errMode {
+  color: $color-error;
+  text-align: center;
+  padding: 5px 0;
 }
 
 // 用戶頭貼資訊組件

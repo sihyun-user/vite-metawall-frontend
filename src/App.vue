@@ -12,6 +12,8 @@ export default {
     const store = useStore()
 
     watch(() => route.path, () => store.commit('setErrorMag',''));
+
+    store.dispatch('tryLogin')
   }
 }
 </script>

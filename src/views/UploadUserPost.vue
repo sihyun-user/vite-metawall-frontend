@@ -17,9 +17,7 @@
           <img :src="blobImage">
         </div>
       </div>
-      <p class="error" v-if="errorMag">
-        {{ errorMag }}
-      </p>
+      <p class="error" v-if="errorMsg">{{ errorMsg }}</p>
       <div class="post__sunbmitBtn">
         <button class="baseGrayBtn" @click="handleSubmit">送出貼文</button>
       </div>
@@ -47,7 +45,7 @@ export default {
     const content = ref('')
     const imageLink = ref('')
 
-    const errorMag = computed(() => store.getters.errorMag)
+    const errorMsg = computed(() => store.getters.errorMsg)
     const isLoading = computed(() => store.getters.isLoading)
 
     // 預覽圖檔
@@ -80,7 +78,7 @@ export default {
         const formData = new FormData()
         formData.append('image', imageFile.value)
 
-        const api = `${process.env.VUE_APP_API}/api/uploads`
+        const api = `${import.meta.env.VITE_APP_API}/api/uploads`
         const response = await axios.post(api, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
@@ -104,11 +102,11 @@ export default {
       try {
         const paramData = {
           content: content.value,
-          user: process.env.VUE_APP_USER_ID,
+          user: import.meta.env.VITE_APP_USER_ID,
           image: imageLink.value
         }
 
-        const api = `${process.env.VUE_APP_API}/api/posts`
+        const api = `${import.meta.env.VITE_APP_API}/api/posts`
         const response = await axios.post(api, paramData)
         store.commit('setIsLoading', false)
 
@@ -142,7 +140,7 @@ export default {
     return {
       content,
       blobImage,
-      errorMag,
+      errorMsg,
       isLoading,
       handlePreviewImage,
       handleSubmit

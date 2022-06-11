@@ -21,13 +21,6 @@
           <input type="radio" id="asc" v-model="sortType">
           <label for="asc" >最舊貼文</label>
         </li>
-        <!-- <li
-          :class="{ 'post-sort-list--select': sortType=='recommend' }"
-          @click="switchSortCaption('recommend')"
-        >
-          <input type="radio" id="recommend" v-model="sortType">
-          <label for="recommend" >推薦貼文</label>
-        </li> -->
       </ul>
     </div>
 
@@ -55,8 +48,6 @@ export default {
       } else if (sortType.value === 'asc') {
         return '最舊貼文'
       }
-
-      return '推薦貼文'
     })
 
     function switchSort () {
@@ -74,6 +65,7 @@ export default {
         content:  sortContent.value
       }
 
+      isSort.value = false
       sortContent.value = ''
       content.emit('filter-posts', filterData)
     }

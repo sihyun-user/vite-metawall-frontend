@@ -1,7 +1,8 @@
 <template>
   <div class="userHeader">
     <div class="userHeader__photo">
-      <img :src="photo">
+      <img :src="photo" v-if="photo !== ''">
+      <img src="/src/assets/img/user_default.jpg" v-else>
     </div>
     <div class="userHeader__wrap">
       <h3 class="userHeader__name">

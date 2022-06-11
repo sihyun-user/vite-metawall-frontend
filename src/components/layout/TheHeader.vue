@@ -15,7 +15,7 @@
             <li>
               <router-link to="/edit-userinfo">修改個人資料</router-link>
             </li>
-            <li>登出</li>
+            <li @click="logout">登出</li>
           </ul>
           <div class="user-wrap__list-bg"></div>
         </div>
@@ -23,3 +23,20 @@
     </nav>
   </header>
 </template>
+
+<script>
+import { useStore } from 'vuex'
+export default {
+  setup() {
+    const store = useStore()
+
+    function logout () {
+      store.dispatch('logout')
+    }
+
+    return {
+      logout
+    }
+  }
+}
+</script>

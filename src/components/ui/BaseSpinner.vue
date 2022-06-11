@@ -11,15 +11,21 @@
       <div></div>
     </div>
   </div>
+  <div class="maskMode"></div>
 </template>
 
 <style scoped>
 .spinner {
-  display: flex;
+  /* display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 30vh;
+  height: 30vh; */
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 11;
 }
 
 .lds-roller {

@@ -13,7 +13,7 @@
       <div class="post__state-like">
         <i class="fa-regular fa-thumbs-up"></i>
         <!-- <i class="fa-solid fa-thumbs-up"></i> -->
-        <span>{{ likes }}</span>
+        <span>{{ likes.length }}</span>
       </div>
       <div class="post__state-msg" @click="switchMsgMode">
         <i class="fa-regular fa-comment"></i>

@@ -1,4 +1,4 @@
-const isShowConsole = process.env.VUE_APP_ISSHOWCONSOLE
+const isShowConsole = import.meta.env.VITE_APP_ISSHOWCONSOLE
 
 const checkConsole = (text, response) => {
   if (isShowConsole === 'true') {

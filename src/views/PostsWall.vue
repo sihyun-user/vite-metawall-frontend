@@ -22,8 +22,6 @@
 <script>
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
-import axios from 'axios'
-import handleService from '../service/helpers'
 import PostCard from '../components/PostCard.vue'
 import PostFilter from '../components/PostFilter.vue'
 export default {
@@ -46,23 +44,10 @@ export default {
       getPosts()
     }
 
-    // 撈取貼文
+    // 取得貼文列表
     async function getPosts () {
-      try {
-        store.commit('setIsLoading', true)
-
-        const query = `timeSort=${sort.timeSort}&q=${sort.content}`
-        const api = `${process.env.VUE_APP_API}/api/posts?${query}`
-        const res = await axios.get(api)
-  
-        store.commit('setIsLoading', false)
-        if (res.data.status) {
-          handleService.checkConsole('獲取貼文成功', res.data)
-          posts.value = res.data.data
-        }
-      } catch (error) {
-        alert('系統忙碌中，請稍後再試')
-      }
+      const result = await store.dispatch('getPosts', sort)
+      posts.value = result
     }
 
     getPosts()
@@ -70,7 +55,6 @@ export default {
     return {
       posts,
       isLoading,
-      getPosts,
       searchPosts
     }
   }
