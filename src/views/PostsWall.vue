@@ -1,8 +1,7 @@
 <template>
   <section class="posts-wall">
-    <div class="no-post" v-if="posts && posts.length==0">目前尚無動態，新增一則貼文吧！</div>
-
-    <section v-else>
+    <section v-if="!isLoading">
+      <div class="no-post" v-if="posts && posts.length==0">目前尚無動態，新增一則貼文吧！</div>
       <post-filter class="filter" @filter-posts='searchPosts'></post-filter>
       <post-card v-for="post in posts"
       :key="post._id"
@@ -17,7 +16,7 @@
       </post-card>
     </section>
 
-    <base-spinner v-if="isLoading"></base-spinner>
+    <base-spinner v-else></base-spinner>
   </section>
 </template>
 

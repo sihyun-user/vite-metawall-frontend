@@ -82,6 +82,7 @@ export default {
       mode.value === 'login' ? mode.value = 'signup' : mode.value = 'login'
     }
 
+    // 登入
     function login () {
       store.commit('setErrorMag', '')
 
@@ -101,6 +102,7 @@ export default {
       store.dispatch('login', payload)
     }
 
+    // 註冊
     async function signup () {
       store.commit('setErrorMag', '')
       
@@ -128,6 +130,7 @@ export default {
       }
     }
     
+    // 清除表單資料
     function clearForm () {
       name.value = ''
       email.value = ''

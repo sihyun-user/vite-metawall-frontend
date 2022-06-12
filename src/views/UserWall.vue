@@ -4,16 +4,16 @@
       <div class="follow">
         <div class="follow__content follow__info">
           <div class="follow__info--photo">
-            <!-- <base-userPhoto :userPhoto="userInfo.photo"></base-userPhoto> -->
+            <base-userPhoto :userPhoto="user.photo"></base-userPhoto>
           </div>
           <div class="follow__info--wrap">
             <div class="follow__info--user">
-              <h3>工程師皮卡</h3>
-              <span>987,987 人追蹤</span>
+              <h3>{{ user.name }}</h3>
+              <span>{{ followers.length }} 人追蹤</span>
             </div>
-            <div class="follow__info--btn">
-              <!-- <button class="baseYellowBtn">追蹤</button> -->
-              <button class="baseGrayBtn-2">取消追蹤</button>
+            <div class="follow__info--btn" v-if="userId !== user._id">
+              <button class="baseYellowBtn" v-if="!isfollowing">追蹤</button>
+              <button class="baseGrayBtn-2" v-else>取消追蹤</button>
             </div>
           </div>
         </div>
@@ -40,9 +40,9 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, reactive, watch } from 'vue'
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import PostCard from '../components/PostCard.vue'
 import PostFilter from '../components/PostFilter.vue'
 import BaseUserPhoto from '../components/ui/BaseUserPhoto.vue'
@@ -55,29 +55,49 @@ export default {
   setup () {
     const store = useStore()
     const route = useRoute()
+    const router = useRouter()
+    const user = ref({})
     const posts = ref([])
+    const followers = ref({})
+    const isfollowing = ref(false)
 
+    const userId = computed(() => store.getters.userId)
     const isLoading = computed(() => store.getters.isLoading)
 
-    // const currentUser = computed(() => posts)
+    watch(() => user.value, (val) => {
+      followers.value = val.followers
 
-    async function getUserPosts() {
+      // 檢查是否是追蹤對象
+      for(let i = 0; i < val.followers.length; i++) {
+        if (val.followers[i].user._id == userId.value) {
+          isfollowing.value = true
+          break
+        }
+
+        isfollowing.value = false
+      }
+    }, {deep: true})
+
+    // 取得個人動態牆
+    async function getUserWall() {
       const userId = route.query.userId
-      const result = await store.dispatch('getUserPosts', { userId })
-      posts.value = result
+      const result = await store.dispatch('getUserWall', { userId })
+      user.value = result.user
+      posts.value = result.posts
     }
 
-    // async function getUserInfo() {
-    //   const result = await store.dispatch('getUserInfo')
+    // 追蹤
+    
 
-    //   console.log(result)
-    // }
-
-    getUserPosts()
+    getUserWall()
 
     return {
+      user,
       posts,
-      isLoading
+      userId, 
+      isLoading,
+      followers,
+      isfollowing
     }
   }
 }

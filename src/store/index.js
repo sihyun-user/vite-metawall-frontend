@@ -40,6 +40,25 @@ export default createStore({
     }
   },
   actions: {
+    logout(context) {
+      localStorage.removeItem('token')
+      localStorage.removeItem('userId')
+      
+      context.commit('clearInfo')
+      router.replace('/auth')
+    },
+    tryLogin(context) {
+      const token = localStorage.getItem('token')
+      const userId = localStorage.getItem('userId')
+
+      if(token && userId){
+        context.commit('isLogin', true)
+        context.commit('setUser', {
+          token: token,
+          userId: userId,
+        })
+      }
+    },
     async login(context, payload) {
       try {
         context.commit('setIsLoading', true)
@@ -129,27 +148,6 @@ export default createStore({
         alert('系統忙碌中，請稍後再試')
       }
     },
-    async getUserPosts(context, payload) {
-      try {
-        context.commit('setIsLoading', true)
-
-        const api = `${import.meta.env.VITE_APP_API}/api/user/profile/${payload.userId}`
-        const res = await axios.get(api, {
-          headers: {
-            Authorization: `Bearer ${context.getters.token}`
-          }
-        })
-
-        context.commit('setIsLoading', false)
-        checkConsole('取得個人貼文列表成功', res.data)
-        return res.data.data
-      } catch (err) {
-        context.commit('setIsLoading', false)
-        checkConsole('取得個人貼文列表失敗', err.response)
-        router.replace('posts-wall')
-        alert('目前無法查看此內容，查無使用者或系統忙碌中')
-      }
-    },
     //todo: 即時留言更新
     async addPostComment(context, payload) {
       try {
@@ -170,23 +168,25 @@ export default createStore({
         checkConsole('新增貼文的留言失敗', err.response)
       }
     },
-    logout(context) {
-      localStorage.removeItem('token')
-      localStorage.removeItem('userId')
-      
-      context.commit('clearInfo')
-      router.replace('/auth')
-    },
-    tryLogin(context) {
-      const token = localStorage.getItem('token')
-      const userId = localStorage.getItem('userId')
+    async getUserWall(context, payload) {
+      try {
+        context.commit('setIsLoading', true)
 
-      if(token && userId){
-        context.commit('isLogin', true)
-        context.commit('setUser', {
-          token: token,
-          userId: userId,
+        const api = `${import.meta.env.VITE_APP_API}/api/user/profileWall/${payload.userId}`
+        const res = await axios.get(api, {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
         })
+
+        context.commit('setIsLoading', false)
+        checkConsole('取得個人動態牆成功', res.data)
+        return res.data.data
+      } catch (err) {
+        context.commit('setIsLoading', false)
+        checkConsole('取得個人動態牆失敗', err.response)
+        router.replace('posts-wall')
+        alert('目前無法查看此內容，查無使用者或系統忙碌中')
       }
     }
   },
