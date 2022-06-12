@@ -127,27 +127,6 @@ export default createStore({
         checkConsole('取得會員資料失敗', res.data)
       }
     },
-    async getPosts(context, payload) {
-      try {
-        context.commit('setIsLoading', true)
-
-        const query = `timeSort=${payload.timeSort}&q=${payload.content}`
-        const api = `${import.meta.env.VITE_APP_API}/api/posts?${query}`
-        const res = await axios.get(api, {
-          headers: {
-            Authorization: `Bearer ${context.getters.token}`
-          }
-        })
-
-        checkConsole('取得貼文列表成功', res.data)
-        context.commit('setIsLoading', false)
-        return res.data.data
-      } catch (err) {
-        context.commit('setIsLoading', false)
-        checkConsole('取得貼文列表失敗', err.response)
-        alert('系統忙碌中，請稍後再試')
-      }
-    },
     //todo: 即時留言更新
     async addPostComment(context, payload) {
       try {
@@ -172,7 +151,7 @@ export default createStore({
       try {
         context.commit('setIsLoading', true)
 
-        const api = `${import.meta.env.VITE_APP_API}/api/user/profileWall/${payload.userId}`
+        const api = `${import.meta.env.VITE_APP_API}/api/user/profileWall/${payload.user_id}`
         const res = await axios.get(api, {
           headers: {
             Authorization: `Bearer ${context.getters.token}`
@@ -187,6 +166,106 @@ export default createStore({
         checkConsole('取得個人動態牆失敗', err.response)
         router.replace('posts-wall')
         alert('目前無法查看此內容，查無使用者或系統忙碌中')
+      }
+    },
+    async followUser (context, payload) {
+      try {
+        const api = `${import.meta.env.VITE_APP_API}/api/user/${payload.user_id}/follow`
+        const res = await axios.post(api, {}, {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+        
+        checkConsole('追蹤朋友成功', res.data)
+      } catch (err) {
+        checkConsole('追蹤朋友失敗', err.response)
+        alert('系統忙碌中，請稍後再試')
+      }
+    },
+    async unfollowUser (context, payload) {
+      try {
+        const api = `${import.meta.env.VITE_APP_API}/api/user/${payload.user_id}/follow`
+        const res = await axios.delete(api, {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+        
+        checkConsole('取消追蹤朋友成功', res.data)
+      } catch (err) {
+        checkConsole('取消追蹤朋友失敗', err.response)
+        alert('系統忙碌中，請稍後再試')
+      }
+    },
+    async getPosts(context, payload) {
+      try {
+        context.commit('setIsLoading', true)
+
+        const query = `timeSort=${payload.timeSort}&q=${payload.content}`
+        const api = `${import.meta.env.VITE_APP_API}/api/posts?${query}`
+        const res = await axios.get(api, {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+
+        checkConsole('取得貼文列表成功', res.data)
+        context.commit('setIsLoading', false)
+        return res.data.data
+      } catch (err) {
+        context.commit('setIsLoading', false)
+        checkConsole('取得貼文列表失敗', err.response)
+        alert('系統忙碌中，請稍後再試')
+      }
+    },
+    async createPost (context, payload) {
+      try {
+        context.commit('setIsLoading', true)
+        const api = `${import.meta.env.VITE_APP_API}/api/post`
+        const paramData = {
+          content: payload.content,
+          image: payload.image
+        }
+
+        const res = await axios.post(api, paramData, {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+
+        context.commit('setIsLoading', false)
+        checkConsole('新增貼文成功', res.data)
+        router.push('/posts-wall')
+      } catch (err) {
+        const message = err.response.data.message
+        context.commit('setIsLoading', false)
+        context.commit('setErrorMag', `新增貼文失敗，${message}`)
+        checkConsole('新增貼文失敗', err.response)
+      }
+    },
+    async uploadImage (context, payload) {
+      try {
+        context.commit('setIsLoading', true)
+        const api = `${import.meta.env.VITE_APP_API}/api/upload`
+        const formData = new FormData()
+        formData.append('image', payload)
+
+        const res = await axios.post(api, formData, {
+          headers: {
+            'Authorization': `Bearer ${context.getters.token}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        const imageUrl = res.data.data.url
+  
+        checkConsole('上傳貼文圖片成功', res.data)
+        return imageUrl
+      } catch (err) {
+        const message = err.response.data.message
+        context.commit('setIsLoading', false)
+        context.commit('setErrorMag', `新增貼文失敗，${message}`)
+        checkConsole('上傳貼文圖片失敗', err.response)
       }
     }
   },

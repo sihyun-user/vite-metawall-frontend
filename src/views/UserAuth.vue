@@ -42,8 +42,8 @@
         <button class="user-control__switchBtn"  @click="switchAuthMode">{{ switchModeButtonCaption }}</button>
       </div>
     </div>
-    <base-spinner v-if="isLoading"></base-spinner>
   </section>
+  <base-spinner v-if="isLoading"></base-spinner>
 </template>
 
 <script>

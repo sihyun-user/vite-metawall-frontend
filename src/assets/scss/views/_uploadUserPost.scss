@@ -24,18 +24,30 @@
 
     &__photo {
       margin-bottom: 30px;
-      
 
+      &--wrap {
+        display: flex;
+        margin-bottom: 25px;
+      }
+      
       &--btn {
         font-size: 16px;
         color: $color-white;
-        background-color: $color-primary;
         text-align: center;
-        margin-bottom: 25px;
+        padding: 4px 25px;
+        cursor: pointer;
+
+        &:first-child {
+          background-color: $color-primary;
+        }
+
+        &:last-child {
+          background-color: $color-gray-4;
+          margin-left: 30px;
+        }
 
         label {
           display: inline-block;
-          padding: 4px 25px;
           cursor: pointer;
         }
       }

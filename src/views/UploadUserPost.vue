@@ -7,12 +7,17 @@
         <textarea placeholder="輸入您的貼文內容" v-model="content"></textarea>
       </div>
       <div class="post__photo">
-        <button class="post__photo--btn">
-          <label for="upload">
-            上傳圖片
-            <input name="image" id="upload" type="file" accept="image/*" @change="handlePreviewImage">
-          </label>
-        </button>
+        <div class="post__photo--wrap">
+          <button class="post__photo--btn">
+            <label for="upload">
+              上傳圖片
+              <input name="image" id="upload" type="file" accept="image/*" @change="handlePreviewImage">
+            </label>
+          </button>
+          <button class="post__photo--btn" v-show="imageFile" @click="clearImage">
+            清除圖片
+          </button>
+        </div>
         <div class="post__photo--img" v-if="blobImage">
           <img :src="blobImage">
         </div>
@@ -38,13 +43,11 @@ export default {
     BaseCaption, BaseCard
   },
   setup() {
-    const router = useRouter()
     const store = useStore()
     const imageFile = ref(null)
     const blobImage = ref(null)
     const content = ref('')
-    const imageLink = ref('')
-
+  
     const errorMsg = computed(() => store.getters.errorMsg)
     const isLoading = computed(() => store.getters.isLoading)
 
@@ -52,6 +55,13 @@ export default {
     function handlePreviewImage (e) {
       imageFile.value = e.target.files[0];
       blobImage.value = URL.createObjectURL(imageFile.value)
+    }
+
+    // 清除圖片
+    function clearImage () {
+      imageFile.value = null
+      blobImage.value = null
+      store.commit('setErrorMag', null)
     }
 
     // 檢查送出貼文格式
@@ -63,62 +73,13 @@ export default {
       } else if (imageFile.value !== null) {
         const fileSize = Math.ceil(imageFile.value.size/1024) // KB
 
-        if (fileSize > 100) {
-          const errorTxt = '圖片檔案過大，僅限 1mb 以下檔案'
+        if (fileSize > 200) {
+          const errorTxt = '圖片檔案過大，僅限 2mb 以下檔案'
           store.commit('setErrorMag', errorTxt)
           return false
         }
       }
       return true
-    }
-
-    // 上傳貼文圖片
-    async function uploadImage () {
-      try {
-        const formData = new FormData()
-        formData.append('image', imageFile.value)
-
-        const api = `${import.meta.env.VITE_APP_API}/api/uploads`
-        const response = await axios.post(api, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-
-        if (!response.status) throw Error
-
-        imageLink.value = response.data.data.url
-        checkConsole('上傳貼文圖片成功', response.data)
-
-        return 'ok'
-      } catch (error) {
-        alert('系統忙碌中，請稍後再試')
-        store.commit('setIsLoading', false)
-      }
-    }
-
-    // 創建貼文
-    async function craetPost () {
-      try {
-        const paramData = {
-          content: content.value,
-          user: import.meta.env.VITE_APP_USER_ID,
-          image: imageLink.value
-        }
-
-        const api = `${import.meta.env.VITE_APP_API}/api/posts`
-        const response = await axios.post(api, paramData)
-        store.commit('setIsLoading', false)
-
-        if (!response.status) throw Error
-
-        alert('貼文創建成功')
-        router.push('/posts-wall')
-        checkConsole('創建貼文成功', response.data)
-      } catch (error) {
-        alert('系統忙碌中，請稍後再試')
-        store.commit('setIsLoading', false)
-      }
     }
 
     async function handleSubmit () {
@@ -127,22 +88,29 @@ export default {
       if (!checkOk) return
 
       // 2) 上傳貼文圖片 & 創建貼文
-      store.commit('setIsLoading', true)
-
       if (!imageFile.value) {
-        craetPost()
+        store.dispatch('createPost', {
+          content: content.value,
+          image: ''
+        })
       } else {
-        const uploadResult = await uploadImage()
-        if (uploadResult == 'ok') craetPost()
+        const imageUrl = await store.dispatch('uploadImage', imageFile.value)
+        if (!imageUrl) return
+        store.dispatch('createPost', {
+            content: content.value,
+            image: imageUrl
+          })
       }
     }
 
     return {
       content,
+      imageFile,
       blobImage,
       errorMsg,
       isLoading,
       handlePreviewImage,
+      clearImage,
       handleSubmit
     }
   }
