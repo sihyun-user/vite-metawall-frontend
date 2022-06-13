@@ -23,7 +23,7 @@
     <section class="post__commentWall" v-if="msgMode">
       <div class="post__writeComment">
         <div class="post__writeComment-photo">
-          <base-userPhoto :userPhoto="userInfo.photo"></base-userPhoto>
+          <base-userPhoto :user-photo="userInfo.photo"></base-userPhoto>
         </div>
         <div class="post__writeComment-wrap">
           <input type="text" placeholder="留言..." v-model="commentContent">

@@ -1,7 +1,7 @@
 <template>
   <div class="userHeader">
     <div class="userHeader__photo">
-      <base-userPhoto :userPhoto="user.photo"></base-userPhoto>
+      <base-userPhoto :user-photo="user.photo"></base-userPhoto>
     </div>
     <div class="userHeader__wrap">
       <h3 class="userHeader__name">

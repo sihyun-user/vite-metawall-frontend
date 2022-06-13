@@ -8,7 +8,7 @@
         >
           <router-link :to="curUserWallLink">
             <div class="story-list__mode-row">
-              <base-userPhoto :userPhoto="userInfo.photo"></base-userPhoto>
+              <base-userPhoto :user-photo="userInfo.photo"></base-userPhoto>
             </div>
             <h3 class="story-list__mode-name">{{ userInfo.name }}</h3>
           </router-link>

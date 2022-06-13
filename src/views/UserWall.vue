@@ -3,7 +3,7 @@
     <div class="follow">
       <div class="follow__content follow__info">
         <div class="follow__info--photo">
-          <base-userPhoto :userPhoto="user.photo"></base-userPhoto>
+          <base-userPhoto :user-photo="user.photo"></base-userPhoto>
         </div>
         <div class="follow__info--wrap">
           <div class="follow__info--user">

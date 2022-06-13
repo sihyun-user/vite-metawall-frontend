@@ -4,7 +4,7 @@
       <h1><router-link to="/posts-wall">MetaWall</router-link></h1>
       <div class="user-wrap" v-if="hasUserInfo">
         <div class="user-wrap__photo">
-          <base-userPhoto :userPhoto="userInfo.photo"></base-userPhoto>
+          <base-userPhoto :user-photo="userInfo.photo"></base-userPhoto>
         </div>
         <div class="user-wrap__name">{{ userInfo.name }}</div>
         <div class="user-wrap__listBox">
