@@ -59,6 +59,7 @@ export default createStore({
         })
       }
     },
+    // 登入
     async login(context, payload) {
       try {
         context.commit('setIsLoading', true)
@@ -88,6 +89,7 @@ export default createStore({
         checkConsole('登入失敗', err.response)
       }
     },
+    // 註冊
     async signup(context, payload) {
       try {
         context.commit('setIsLoading', true)
@@ -110,6 +112,7 @@ export default createStore({
         checkConsole('註冊失敗', err.response)
       }
     },
+    // 取得會員資料
     async getUserInfo(context) {
       try {
         const api = `${import.meta.env.VITE_APP_API}/api/user/profile`
@@ -127,7 +130,11 @@ export default createStore({
         checkConsole('取得會員資料失敗', res.data)
       }
     },
-    //todo: 即時留言更新
+    // 編輯會員資料
+    async updateProfile(context) {
+
+    },
+    // 新增一則貼文的留言 //todo: 即時留言更新
     async addPostComment(context, payload) {
       try {
         const api = `${import.meta.env.VITE_APP_API}/api/post/${payload.postId}/comment`
@@ -147,27 +154,7 @@ export default createStore({
         checkConsole('新增貼文的留言失敗', err.response)
       }
     },
-    async getUserWall(context, payload) {
-      try {
-        context.commit('setIsLoading', true)
-
-        const api = `${import.meta.env.VITE_APP_API}/api/user/profileWall/${payload.user_id}`
-        const res = await axios.get(api, {
-          headers: {
-            Authorization: `Bearer ${context.getters.token}`
-          }
-        })
-
-        context.commit('setIsLoading', false)
-        checkConsole('取得個人動態牆成功', res.data)
-        return res.data.data
-      } catch (err) {
-        context.commit('setIsLoading', false)
-        checkConsole('取得個人動態牆失敗', err.response)
-        router.replace('posts-wall')
-        alert('目前無法查看此內容，查無使用者或系統忙碌中')
-      }
-    },
+    // 追蹤朋友
     async followUser (context, payload) {
       try {
         const api = `${import.meta.env.VITE_APP_API}/api/user/${payload.user_id}/follow`
@@ -183,6 +170,7 @@ export default createStore({
         alert('系統忙碌中，請稍後再試')
       }
     },
+    // 取消追蹤朋友
     async unfollowUser (context, payload) {
       try {
         const api = `${import.meta.env.VITE_APP_API}/api/user/${payload.user_id}/follow`
@@ -198,6 +186,7 @@ export default createStore({
         alert('系統忙碌中，請稍後再試')
       }
     },
+    // 取得貼文列表
     async getPosts(context, payload) {
       try {
         context.commit('setIsLoading', true)
@@ -219,6 +208,7 @@ export default createStore({
         alert('系統忙碌中，請稍後再試')
       }
     },
+    // 新增一則貼文
     async createPost (context, payload) {
       try {
         context.commit('setIsLoading', true)
@@ -244,6 +234,7 @@ export default createStore({
         checkConsole('新增貼文失敗', err.response)
       }
     },
+    // 上傳圖片
     async uploadImage (context, payload) {
       try {
         context.commit('setIsLoading', true)
