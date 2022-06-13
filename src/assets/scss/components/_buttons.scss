@@ -101,3 +101,30 @@
     transform: translateY(2px);
   }
 }
+
+.imageBtn {
+  font-size: 16px;
+  color: $color-white;
+  text-align: center;
+
+  label {
+    display: inline-block;
+    padding: 4px 25px;
+    cursor: pointer;
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+  
+  &--black {
+    background-color: $color-primary;
+  }
+
+  // 清除圖片按鈕
+  &--gray {
+    background-color: $color-gray-4;
+    padding: 4px 25px;
+    cursor: pointer;
+  }
+}

@@ -1,9 +1,4 @@
 .edit-userinfo {
-
-  .row {
-
-  }
-
   .category {
     display: flex;
     margin-left: 15px;
@@ -49,7 +44,6 @@
   }
 
   .profile-info {
-
     &__photo {
       display: flex;
       flex-direction: column;
@@ -62,18 +56,15 @@
         background-color: $color-blue;
         border: 2px solid $color-primary;
         border-radius: 100%;
-        overflow: hidden;
         margin-bottom: 20px;
-      }
-      
+        overflow: hidden;
+        display: flex;
 
-      &--btn {
-        font-size: 16px;
-        color: $color-white;
-        background-color: $color-primary;
-        text-align: center;
-        padding: 4px 25px;
-        cursor: pointer;
+        img {
+          display: block;
+          object-fit: cover;
+          object-position: center;
+        }
       }
     }
 

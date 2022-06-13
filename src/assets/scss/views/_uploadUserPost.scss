@@ -1,5 +1,4 @@
 .upload-userPost {
-
   .post {
     &__text {
       margin-bottom: 15px;
@@ -25,30 +24,12 @@
     &__photo {
       margin-bottom: 30px;
 
-      &--wrap {
+      &--btns {
         display: flex;
         margin-bottom: 25px;
-      }
-      
-      &--btn {
-        font-size: 16px;
-        color: $color-white;
-        text-align: center;
-        padding: 4px 25px;
-        cursor: pointer;
 
-        &:first-child {
-          background-color: $color-primary;
-        }
-
-        &:last-child {
-          background-color: $color-gray-4;
-          margin-left: 30px;
-        }
-
-        label {
-          display: inline-block;
-          cursor: pointer;
+        & button:last-child {
+          margin-left: 20px;
         }
       }
 
@@ -75,10 +56,6 @@
         max-width: 325px;
         width: 100%;
       }
-    }
-
-    input[type="file"] {
-      display: none;
     }
   }
 

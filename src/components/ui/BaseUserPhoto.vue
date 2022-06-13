@@ -1,6 +1,6 @@
 <template>
-  <img :src="userPhoto" v-if="userPhoto !== ''">
-  <img src="/src/assets/img/user_default.jpg" v-else>
+  <img class="userPhoto" :src="userPhoto" v-if="userPhoto !== ''">
+  <img class="userPhoto" src="/src/assets/img/user_default.jpg" v-else>
 </template>
 
 <script>

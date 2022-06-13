@@ -112,6 +112,32 @@ export default createStore({
         checkConsole('註冊失敗', err.response)
       }
     },
+    // 更新密碼 
+    async updatePassword(context, payload) {
+      try {
+        context.commit('setIsLoading', true)
+        const api = `${import.meta.env.VITE_APP_API}/api/user/updatePassword`
+        const paramData = {
+          password: payload.password,
+          confirmPassword: payload.confirmPassword
+        }
+  
+        const res = await axios.post(api, paramData, {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+        context.commit('setIsLoading', false)
+        checkConsole('更新密碼成功', res.data)
+        alert('更新密碼成功')
+        return true
+      } catch (err) {
+        const message = err.response.data.message
+        context.commit('setIsLoading', false)
+        context.commit('setErrorMag', `更新密碼失敗，${message}`)
+        checkConsole('更新密碼失敗', err.response)
+      }
+    },
     // 取得會員資料
     async getUserInfo(context) {
       try {
@@ -131,8 +157,54 @@ export default createStore({
       }
     },
     // 編輯會員資料
-    async updateProfile(context) {
+    async updateUserInfo(context, payload) {
+      try {
+        context.commit('setIsLoading', true)
+        const api = `${import.meta.env.VITE_APP_API}/api/user/profile`
+        const paramData = {
+          name: payload.name,
+          sex: payload.sex,
+          photo: payload.photo,
+        }
 
+        const res = await axios.patch(api, paramData, {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+        
+        context.commit('setIsLoading', false)
+        context.commit('setUserInfo', res.data.data.user)
+        checkConsole('編輯會員資料成功', res.data)
+        alert('編輯會員資料成功')
+      } catch (err) {
+        const message = err.response.data.message
+        context.commit('setIsLoading', false)
+        context.commit('setErrorMag', `編輯會員資料失敗，${message}`)
+        checkConsole('編輯會員資料失敗', err.response)
+      }
+    },
+    // 取得個人動態牆
+    async getUserWall(context, payload) {
+      try {
+        context.commit('setIsLoading', true)
+
+        const api = `${import.meta.env.VITE_APP_API}/api/user/profileWall/${payload.user_id}`
+        const res = await axios.get(api, {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+
+        context.commit('setIsLoading', false)
+        checkConsole('取得個人動態牆成功', res.data)
+        return res.data.data
+      } catch (err) {
+        context.commit('setIsLoading', false)
+        checkConsole('取得個人動態牆失敗', err.response)
+        router.replace('posts-wall')
+        alert('目前無法查看此內容，查無使用者或系統忙碌中')
+      }
     },
     // 新增一則貼文的留言 //todo: 即時留言更新
     async addPostComment(context, payload) {
@@ -250,13 +322,13 @@ export default createStore({
         })
         const imageUrl = res.data.data.url
   
-        checkConsole('上傳貼文圖片成功', res.data)
+        checkConsole('上傳圖片成功', res.data)
         return imageUrl
       } catch (err) {
         const message = err.response.data.message
         context.commit('setIsLoading', false)
-        context.commit('setErrorMag', `新增貼文失敗，${message}`)
-        checkConsole('上傳貼文圖片失敗', err.response)
+        context.commit('setErrorMag', `上傳圖片失敗，${message}`)
+        checkConsole('上傳圖片失敗', err.response)
       }
     }
   },

@@ -31,7 +31,7 @@
   padding: 5px 0;
 }
 
-// 用戶頭貼資訊組件
+// 頭貼資訊組件
 .userHeader {
   display: flex;
 
@@ -61,6 +61,14 @@
       font-weight: $regular;
     }
   }
+}
+
+// 頭貼圖片
+.userPhoto {
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  height: 100%;
 }
 
 .caption {

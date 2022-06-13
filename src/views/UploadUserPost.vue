@@ -7,14 +7,14 @@
         <textarea placeholder="輸入您的貼文內容" v-model="content"></textarea>
       </div>
       <div class="post__photo">
-        <div class="post__photo--wrap">
-          <button class="post__photo--btn">
+        <div class="post__photo--btns">
+          <button class="imageBtn imageBtn--black">
             <label for="upload">
               上傳圖片
               <input name="image" id="upload" type="file" accept="image/*" @change="handlePreviewImage">
             </label>
           </button>
-          <button class="post__photo--btn" v-show="imageFile" @click="clearImage">
+          <button class="imageBtn imageBtn--gray" v-show="imageFile" @click="clearImage">
             清除圖片
           </button>
         </div>
@@ -50,7 +50,9 @@ export default {
 
     // 預覽圖檔
     function handlePreviewImage (e) {
-      imageFile.value = e.target.files[0];
+      imageFile.value = e.target.files[0]
+      if (!imageFile.value) return
+
       blobImage.value = URL.createObjectURL(imageFile.value)
     }
 
@@ -93,6 +95,7 @@ export default {
       } else {
         const imageUrl = await store.dispatch('uploadImage', imageFile.value)
         if (!imageUrl) return
+
         store.dispatch('createPost', {
             content: content.value,
             image: imageUrl
