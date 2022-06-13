@@ -17,7 +17,7 @@
       </div>
       <div class="post__state-msg" @click="switchMsgMode">
         <i class="fa-regular fa-comment"></i>
-        <span>留言</span>
+        <span>{{comments.length }} 則留言</span>
       </div>
     </div>
     <section class="post__commentWall" v-if="msgMode">

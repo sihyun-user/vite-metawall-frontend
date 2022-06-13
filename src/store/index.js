@@ -206,6 +206,27 @@ export default createStore({
         alert('目前無法查看此內容，查無使用者或系統忙碌中')
       }
     },
+    // 取得個人留言名單
+    async getCommentPostList(context) {
+      try {
+        context.commit('setIsLoading', true)
+
+        const api = `${import.meta.env.VITE_APP_API}/api/user/comments`
+        const res = await axios.get(api, {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+
+        context.commit('setIsLoading', false)
+        checkConsole('取得個人留言名單成功', res.data)
+        return res.data.data
+      } catch (err) {
+        context.commit('setIsLoading', false)
+        checkConsole('取得個人留言名單失敗', err.response)
+        alert('系統忙碌中,請稍後在試')
+      }
+    },
     // 新增一則貼文的留言 //todo: 即時留言更新
     async addPostComment(context, payload) {
       try {
