@@ -29,6 +29,14 @@
             <h3 class="story-list__mode-name">我按讚的貼文</h3>
           </router-link>
         </li>
+        <li class="story-list__mode" :class="{active:route.path=='/user-comment'}">
+          <router-link to="/user-comment">
+            <div class="story-list__mode-row">
+              <i class="fa-regular fa-comment"></i>
+            </div>
+            <h3 class="story-list__mode-name">我留言的貼文</h3>
+          </router-link>
+        </li>
       </ul>
     </div>
   </section>
