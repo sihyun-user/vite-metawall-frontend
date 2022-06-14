@@ -1,7 +1,7 @@
 <template>
-  <section class="comment" v-if="!isLoading">
+  <section v-if="!isLoading" class="comment">
     <base-caption>我留言的貼文</base-caption>
-    <base-card class="user" v-for="comment in comments" :key="comment._id">
+    <base-card v-for="comment in comments" :key="comment._id" class="user">
       <div class="user__info">
         <div class="user__info-photo">
           <!-- <img src=""> -->
@@ -34,7 +34,7 @@ import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import BaseCaption from '../components/ui/BaseCaption.vue'
 import BaseCard from '../components/ui/BaseCard.vue'
-import moment from 'moment'
+// import moment from 'moment'
 export default {
   components: {
     BaseCaption, BaseCard

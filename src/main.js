@@ -14,6 +14,6 @@ app.use(store)
 app.use(router)
 app.use(VueAxios, axios)
 
-app.component('base-spinner', BaseSpinner)
+app.component('BaseSpinner', BaseSpinner)
 
 app.mount('#app')

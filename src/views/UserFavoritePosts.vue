@@ -1,7 +1,7 @@
 <template>
   <section class="favorite">
     <base-caption>我按讚的貼文</base-caption>
-    <base-card class="user" v-for="user in users" :key="user.id">
+    <base-card v-for="user in users" :key="user.id" class="user">
       <div class="user__info">
         <div class="user__info-photo">
           <!-- <img src=""> -->

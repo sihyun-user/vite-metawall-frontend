@@ -1,5 +1,5 @@
 <template>
-  <section class="edit-userinfo" v-if="!isLoading">
+  <section v-if="!isLoading" class="edit-userinfo">
     <base-caption>修改個人資料</base-caption>
     <div class="category">
       <button :class="{'active':mode=='profile'}"  @click="switchModeCaption('profile')">
@@ -10,7 +10,7 @@
       </button>
     </div>
     <section class="info-wrap">
-      <div class="profile-info" v-if="mode=='profile'">
+      <div v-if="mode=='profile'" class="profile-info">
         <div class="profile-info__photo">
           <div class="profile-info__photo--img">
             <base-userPhoto v-if="!blobImage" :user-photo="profile.photo"></base-userPhoto>
@@ -19,46 +19,46 @@
           <button class="imageBtn imageBtn--black">
             <label for="upload">
               上傳圖片
-              <input name="image" id="upload" type="file" accept="image/*" @change="handlePreviewImage">
+              <input id="upload" name="image" type="file" accept="image/*" @change="handlePreviewImage">
             </label>
           </button>
         </div>
         <div class="profile-info__name input-text">
           <h3>暱稱</h3>
-          <input type="text" placeholder="輸入暱稱" v-model="profile.name">
+          <input v-model="profile.name" type="text" placeholder="輸入暱稱">
         </div>
         <div class="profile-info__sex">
           <h3>性別</h3>
           <div class="profile-info__sex--wrap">
             <label class="radio_label radioMode">
               <div class="radioMode_wrap">
-                <input type="radio" name="sex" value="male" v-model="profile.sex">
+                <input v-model="profile.sex" type="radio" name="sex" value="male">
                 <span class="checkmark"></span>
               </div>
               男性
             </label>
             <label class="radio_label radioMode">
               <div class="radioMode_wrap">
-                <input type="radio" name="sex" value="female" v-model="profile.sex">
+                <input v-model="profile.sex" type="radio" name="sex" value="female">
                 <span class="checkmark"></span>
               </div>
               女性
             </label>
           </div>
         </div>
-        <p class="error" v-if="errorMsg">{{ errorMsg }}</p>
+        <p v-if="errorMsg" class="error">{{ errorMsg }}</p>
         <button class="profile-info__submitBtn baseYellowBtn" @click="updateUserInfo">送出更新</button>
       </div>
-      <div class="password-info" v-else>
+      <div v-else class="password-info">
         <div class="password-info__new input-text">
           <h3>輸入新密碼</h3>
-          <input type="Password" placeholder="輸入新密碼" v-model="pwd.password">
+          <input v-model="pwd.password" type="Password" placeholder="輸入新密碼">
         </div>
         <div class="password-info__secondNew input-text">
           <h3>再次輸入</h3>
-          <input type="Password" placeholder="再次輸入新密碼" v-model="pwd.confirmPassword">
+          <input v-model="pwd.confirmPassword" type="Password" placeholder="再次輸入新密碼">
         </div>
-        <p class="error" v-if="errorMsg">{{ errorMsg }}</p>
+        <p v-if="errorMsg" class="error">{{ errorMsg }}</p>
         <button class="password-info__submitBtn baseGrayBtn" @click="updatePassword">重設密碼</button>
       </div>
     </section>

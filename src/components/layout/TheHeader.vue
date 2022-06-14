@@ -2,7 +2,7 @@
   <header>
     <nav>
       <h1><router-link to="/posts-wall">MetaWall</router-link></h1>
-      <div class="user-wrap" v-if="hasUserInfo">
+      <div v-if="hasUserInfo" class="user-wrap">
         <div class="user-wrap__photo">
           <base-userPhoto :user-photo="userInfo.photo"></base-userPhoto>
         </div>

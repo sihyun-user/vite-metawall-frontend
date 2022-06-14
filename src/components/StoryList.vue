@@ -3,7 +3,8 @@
     <div class="story-list__row">
       <router-link to="/upload-userpost" class="baseBlueBtn story-list__btn">張貼動態</router-link>
       <ul class="story-list__wrap">
-        <li class="story-list__mode" v-if="hasUserInfo"
+        <li
+v-if="hasUserInfo" class="story-list__mode"
           :class="{active:route.path=='/user-wall'}"
         >
           <router-link :to="curUserWallLink">

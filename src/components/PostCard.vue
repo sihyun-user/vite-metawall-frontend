@@ -1,11 +1,11 @@
 <template>
   <base-card class="post">
-    <base-userHeader :user="user" :createdAt="createdAt"></base-userHeader>
+    <base-userHeader :user="user" :created-at="createdAt"></base-userHeader>
     <div class="post__content">
       <p class="post__content-text">
         {{ content }}
       </p>
-      <div class="post__content-img" v-if="postImage">
+      <div v-if="postImage" class="post__content-img">
         <img :src="postImage">
       </div>
     </div>
@@ -20,20 +20,20 @@
         <span>{{comments.length }} 則留言</span>
       </div>
     </div>
-    <section class="post__commentWall" v-if="msgMode">
+    <section v-if="msgMode" class="post__commentWall">
       <div class="post__writeComment">
         <div class="post__writeComment-photo">
           <base-userPhoto :user-photo="userInfo.photo"></base-userPhoto>
         </div>
         <div class="post__writeComment-wrap">
-          <input type="text" placeholder="留言..." v-model="commentContent">
+          <input v-model="commentContent" type="text" placeholder="留言...">
           <button @click="addPostComment">留言</button>
         </div>
       </div>
       <div class="post__comments">
-        <div class="post__no-comment" v-if="comments.length==0">目前尚無留言，新增一則留言吧！</div>
-        <div class="post__commentItem" v-for="comment in comments" :key="comment._id">
-          <base-userHeader :user="comment.user" :createdAt="comment.createdAt"></base-userHeader>
+        <div v-if="comments.length==0" class="post__no-comment">目前尚無留言，新增一則留言吧！</div>
+        <div v-for="comment in comments" :key="comment._id" class="post__commentItem">
+          <base-userHeader :user="comment.user" :created-at="comment.createdAt"></base-userHeader>
           <div class="post__commentItem-row">
             <p>{{ comment.comment }}</p>
           </div>

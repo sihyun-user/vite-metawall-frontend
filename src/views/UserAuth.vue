@@ -10,32 +10,32 @@
         <img class="user-control__img" src="../assets/img/img.svg">
         <section class="user-control__form">
           <!-- 登入 -->
-          <div class="user-control__form-login"  v-if="mode=='login'">
+          <div v-if="mode=='login'"  class="user-control__form-login">
             <div class="user-control__form-login--row">
-              <input type="email" placeholder="Email" v-model="email">
+              <input v-model="email" type="email" placeholder="Email">
             </div>
             <div class="user-control__form-login--row">
-              <input type="Password" placeholder="Password" v-model="password">
+              <input v-model="password" type="Password" placeholder="Password">
             </div>
-            <p class="errMode" v-if="errorMsg">{{ errorMsg }}</p>
+            <p v-if="errorMsg" class="errMode">{{ errorMsg }}</p>
             <button class="user-control__form-btn baseBtn" @click="login">登入</button>
           </div>
 
           <!-- 註冊 -->
-          <div class="user-control__form-register" v-else>
+          <div v-else class="user-control__form-register">
             <div class="user-control__form-register--row">
-              <input type="text" placeholder="暱稱" v-model="name">
+              <input v-model="name" type="text" placeholder="暱稱">
             </div>
             <div class="user-control__form-login--row">
-              <input type="email" placeholder="Email" v-model="email">
+              <input v-model="email" type="email" placeholder="Email">
             </div>
             <div class="user-control__form-register--row">
-              <input type="Password" placeholder="Password" v-model="password">
+              <input v-model="password" type="Password" placeholder="Password">
             </div>
             <div class="user-control__form-register--row">
-              <input type="Password" placeholder="confirmPassword" v-model="confirmPassword">
+              <input v-model="confirmPassword" type="Password" placeholder="confirmPassword">
             </div>
-            <p class="errMode" v-if="errorMsg">{{ errorMsg }}</p>
+            <p v-if="errorMsg" class="errMode">{{ errorMsg }}</p>
             <button class="user-control__form-btn baseGrayBtn" @click="signup">註冊</button>
           </div>
         </section>

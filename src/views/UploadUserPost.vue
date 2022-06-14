@@ -1,28 +1,28 @@
 <template>
-  <section class="upload-userPost" v-if="!isLoading">
+  <section v-if="!isLoading" class="upload-userPost">
     <base-caption>張貼動態</base-caption>
     <base-card class="post">
       <div class="post__text">
         <h1>貼文內容</h1>
-        <textarea placeholder="輸入您的貼文內容" v-model="content"></textarea>
+        <textarea v-model="content" placeholder="輸入您的貼文內容"></textarea>
       </div>
       <div class="post__photo">
         <div class="post__photo--btns">
           <button class="imageBtn imageBtn--black">
             <label for="upload">
               上傳圖片
-              <input name="image" id="upload" type="file" accept="image/*" @change="handlePreviewImage">
+              <input id="upload" name="image" type="file" accept="image/*" @change="handlePreviewImage">
             </label>
           </button>
-          <button class="imageBtn imageBtn--gray" v-show="imageFile" @click="clearImage">
+          <button v-show="imageFile" class="imageBtn imageBtn--gray" @click="clearImage">
             清除圖片
           </button>
         </div>
-        <div class="post__photo--img" v-if="blobImage">
+        <div v-if="blobImage" class="post__photo--img">
           <img :src="blobImage">
         </div>
       </div>
-      <p class="error" v-if="errorMsg">{{ errorMsg }}</p>
+      <p v-if="errorMsg" class="error">{{ errorMsg }}</p>
       <div class="post__sunbmitBtn">
         <button class="baseGrayBtn" @click="handleSubmit">送出貼文</button>
       </div>

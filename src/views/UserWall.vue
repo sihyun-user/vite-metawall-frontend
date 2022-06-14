@@ -1,5 +1,5 @@
 <template>
-  <section class="user-wall" v-if="!isLoading">
+  <section v-if="!isLoading" class="user-wall">
     <div class="follow">
       <div class="follow__content follow__info">
         <div class="follow__info--photo">
@@ -10,26 +10,27 @@
             <h3>{{ user.name }}</h3>
             <span>{{ followers.length }} 人追蹤</span>
           </div>
-          <div class="follow__info--btn" v-if="!isCurrentUser">
-            <button class="baseYellowBtn" v-if="!isfollowing" @click="handleFollow('follow')">追蹤</button>
-            <button class="baseGrayBtn-2" v-else @click="handleFollow('unfollow')">取消追蹤</button>
+          <div v-if="!isCurrentUser" class="follow__info--btn">
+            <button v-if="!isfollowing" class="baseYellowBtn" @click="handleFollow('follow')">追蹤</button>
+            <button v-else class="baseGrayBtn-2" @click="handleFollow('unfollow')">取消追蹤</button>
           </div>
         </div>
       </div>
       <div class="follow__bg"></div>
     </div>
-    <div class="no-post" v-if="posts && posts.length==0">目前尚無動態，新增一則貼文吧！</div>
+    <div v-if="posts && posts.length==0" class="no-post">目前尚無動態，新增一則貼文吧！</div>
     <section v-else>
       <post-filter class="filter"></post-filter>
-      <post-card  v-for="post in posts"
+      <post-card
+        v-for="post in posts"
         :key="post._id"
-        :postId="post._id"
+        :post-id="post._id"
         :user="post.user"
         :likes="post.likes"
         :content="post.content"
-        :postImage="post.image"
+        :post-image="post.image"
         :comments="post.comments"
-        :createdAt="post.createdAt"
+        :created-at="post.createdAt"
         >
       </post-card>
     </section>

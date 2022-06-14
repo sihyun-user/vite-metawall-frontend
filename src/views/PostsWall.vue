@@ -1,17 +1,18 @@
 <template>
-  <section class="posts-wall" v-if="!isLoading">
-    <div class="no-post" v-if="posts && posts.length==0">目前尚無動態，新增一則貼文吧！</div>
+  <section v-if="!isLoading" class="posts-wall">
+    <div v-if="posts && posts.length==0" class="no-post">目前尚無動態，新增一則貼文吧！</div>
     <section v-else>
       <post-filter class="filter" @filter-posts='searchPosts'></post-filter>
-      <post-card v-for="post in posts"
+      <post-card
+v-for="post in posts"
       :key="post._id"
-      :postId="post._id"
+      :post-id="post._id"
       :user="post.user"
       :likes="post.likes"
       :content="post.content"
-      :postImage="post.image"
+      :post-image="post.image"
       :comments="post.comments"
-      :createdAt="post.createdAt"
+      :created-at="post.createdAt"
       >
       </post-card>
     </section>

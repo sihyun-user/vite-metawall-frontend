@@ -3,29 +3,29 @@
     <div class="post-sort">
       <div class="post-sort-select" @click="switchSort">
         <span>{{ sortCaption }}</span>
-        <i class="fa-solid fa-angle-up" v-if="isSort"></i>
-        <i class="fa-solid fa-angle-down" v-else></i>
+        <i v-if="isSort" class="fa-solid fa-angle-up"></i>
+        <i v-else class="fa-solid fa-angle-down"></i>
       </div>
-      <ul class="post-sort-list" v-if="isSort">
+      <ul v-if="isSort" class="post-sort-list">
         <li
           :class="{ 'post-sort-list--select': sortType=='desc' }"
           @click="switchSortCaption('desc')"
         >
-          <input type="radio" id="desc" v-model="sortType">
+          <input id="desc" v-model="sortType" type="radio">
           <label for="desc" >最新貼文</label>
         </li>
         <li
           :class="{ 'post-sort-list--select': sortType=='asc' }"
           @click="switchSortCaption('asc')"
         >
-          <input type="radio" id="asc" v-model="sortType">
+          <input id="asc" v-model="sortType" type="radio">
           <label for="asc" >最舊貼文</label>
         </li>
       </ul>
     </div>
 
     <div class="post-search">
-      <input type="text" placeholder="搜尋貼文" v-model="sortContent">
+      <input v-model="sortContent" type="text" placeholder="搜尋貼文">
       <button class="post-search__btn" @click="filterPosts">
         <i class="fa-solid fa-magnifying-glass"></i>
       </button>
@@ -45,9 +45,8 @@ export default {
     const sortCaption = computed(() => {
       if (sortType.value === 'desc') {
         return '最新貼文'
-      } else if (sortType.value === 'asc') {
-        return '最舊貼文'
-      }
+      } 
+      return '最舊貼文'
     })
 
     function switchSort () {
