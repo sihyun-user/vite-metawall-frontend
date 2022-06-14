@@ -4,7 +4,7 @@
     <section v-else>
       <post-filter class="filter" @filter-posts='searchPosts'></post-filter>
       <post-card
-v-for="post in posts"
+      v-for="post in posts"
       :key="post._id"
       :post-id="post._id"
       :user="post.user"

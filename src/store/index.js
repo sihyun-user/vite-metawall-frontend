@@ -151,9 +151,9 @@ export default createStore({
         context.commit('setUserInfo', res.data.data.user)
         checkConsole('取得會員資料成功', res.data)
         return res.data.data
-      } catch (error) {
+      } catch (err) {
         context.commit('setIsLoading', false)
-        checkConsole('取得會員資料失敗', res.data)
+        checkConsole('取得會員資料失敗', err.response)
       }
     },
     // 編輯會員資料
@@ -227,6 +227,48 @@ export default createStore({
         alert('系統忙碌中,請稍後在試')
       }
     },
+    // 取得個人按讚名單
+    async getLikePostList(context) {
+      try {
+        context.commit('setIsLoading', true)
+
+        const api = `${import.meta.env.VITE_APP_API}/api/user/likes`
+        const res = await axios.get(api, {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+
+        context.commit('setIsLoading', false)
+        checkConsole('取得個人按讚名單成功', res.data)
+        return res.data.data
+      } catch (err) {
+        context.commit('setIsLoading', false)
+        checkConsole('取得個人按讚名單失敗', err.response)
+        alert('系統忙碌中,請稍後在試')
+      }
+    },
+    // 取得個人追蹤名單
+    async getFollowUserList(context) {
+      try {
+        context.commit('setIsLoading', true)
+
+        const api = `${import.meta.env.VITE_APP_API}/api/user/follows`
+        const res = await axios.get(api, {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+
+        context.commit('setIsLoading', false)
+        checkConsole('取得個人追蹤名單成功', res.data)
+        return res.data.data
+      } catch (err) {
+        context.commit('setIsLoading', false)
+        checkConsole('取得個人追蹤名單失敗', err.response)
+        alert('系統忙碌中,請稍後在試')
+      }
+    },
     // 新增一則貼文的留言 //todo: 即時留言更新
     async addPostComment(context, payload) {
       try {
@@ -258,6 +300,7 @@ export default createStore({
         })
         
         checkConsole('追蹤朋友成功', res.data)
+        alert('追蹤成功')
       } catch (err) {
         checkConsole('追蹤朋友失敗', err.response)
         alert('系統忙碌中，請稍後再試')
@@ -274,6 +317,7 @@ export default createStore({
         })
         
         checkConsole('取消追蹤朋友成功', res.data)
+        alert('取消追蹤成功')
       } catch (err) {
         checkConsole('取消追蹤朋友失敗', err.response)
         alert('系統忙碌中，請稍後再試')

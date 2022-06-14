@@ -8,7 +8,10 @@
         <div class="follow__info--wrap">
           <div class="follow__info--user">
             <h3>{{ user.name }}</h3>
-            <span>{{ followers.length }} 人追蹤</span>
+            <div class="follow__info--row">
+              <span>{{ followers.length }} 粉絲</span>
+              <span>{{ following.length }} 追蹤</span>
+            </div>
           </div>
           <div v-if="!isCurrentUser" class="follow__info--btn">
             <button v-if="!isfollowing" class="baseYellowBtn" @click="handleFollow('follow')">追蹤</button>
@@ -34,6 +37,17 @@
         >
       </post-card>
     </section>
+
+    <base-lightBox title="粉絲" v-if="!false">
+      <ul class="myFollow">
+        <li class="myFollow__user" v-for="follow in followers" :key="follow.user._id">
+          <div class="myFollow__user--photo">
+            <base-userPhoto :user-photo="follow.user.photo"></base-userPhoto>
+          </div>
+          <h2>{{ follow.user.name }}</h2>
+        </li>
+      </ul>
+    </base-lightBox>
   </section>
   <base-spinner v-else></base-spinner>
 </template>
@@ -57,6 +71,7 @@ export default {
     const user = ref({})
     const posts = ref([])
     const followers = ref([])
+    const following = ref([])
     const isfollowing = ref(false)
 
     const userId = computed(() => store.getters.userId)
@@ -76,7 +91,10 @@ export default {
       user.value = result.user
       posts.value = result.posts
       followers.value = result.user.followers
+      following.value = result.user.following
       isfollowing.value = checkIsfollowing()
+
+      console.log(followers.value)
     }
 
     // 追蹤/取消追蹤朋友
@@ -99,8 +117,14 @@ export default {
     getUserWall()
 
     return {
-      user, posts, followers, isfollowing,
-      userId, isLoading, isCurrentUser,
+      user, 
+      posts, 
+      followers,
+      following,
+      isfollowing,
+      userId, 
+      isLoading, 
+      isCurrentUser,
       handleFollow
     }
   }

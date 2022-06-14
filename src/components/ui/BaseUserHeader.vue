@@ -7,24 +7,25 @@
       <h3 class="userHeader__name">
         <router-link :to="userWallLink">{{ name }}</router-link>
       </h3>
-      <span class="userHeader__time">{{ createdTime }}</span>
+      <span class="userHeader__time">
+        <base-formatTime :time="createdAt"></base-formatTime>
+      </span>
     </div>
   </div>
 </template>
 
 <script>
 import { computed, toRefs } from 'vue'
-import moment from 'moment'
 import BaseUserPhoto from '../ui/BaseUserPhoto.vue'
+import BaseFormatTime from '../ui/BaseFormatTime.vue'
 export default {
   components: {
-    BaseUserPhoto
+    BaseUserPhoto,
+    BaseFormatTime
   },
   props: ['user', 'createdAt'],
   setup(props) {
     const { _id, name, photo } = toRefs(props.user);
-
-    const createdTime = computed(() => moment(props.createdAt).format('YYYY/MM/DD HH:mm'))
 
     const userWallLink = computed(() => {
       return `/user-wall?userId=${_id.value}`
@@ -33,7 +34,6 @@ export default {
     return {
       name,
       photo,
-      createdTime,
       userWallLink
     }
   }

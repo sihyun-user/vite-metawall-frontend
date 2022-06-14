@@ -3,7 +3,7 @@
   width: 100%;
   min-height: 100vh;
   background-color: $color-black;
-  opacity: 0.2;
+  opacity: 0.5;
   position: fixed;
   top: 0;
   left: 0;
@@ -23,12 +23,6 @@
   &::placeholder {
     font-size: 16px;
   }
-}
-
-.errMode {
-  color: $color-error;
-  text-align: center;
-  padding: 5px 0;
 }
 
 // 頭貼資訊組件
@@ -69,6 +63,22 @@
   object-fit: cover;
   object-position: center;
   height: 100%;
+}
+
+// 彈窗
+.lightBox {
+  width: 400px;
+  height: auto;
+  background-color: $color-white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  padding: 20px 18px;
+
+  position: fixed;
+  top: 150px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 11;
 }
 
 .caption {
@@ -112,4 +122,10 @@
   font-weight: $regular;
   color: #9B9893;
   text-align:center;
+}
+
+.errMode {
+  color: $color-error;
+  text-align: center;
+  padding: 5px 0;
 }

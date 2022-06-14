@@ -4,7 +4,7 @@
       <router-link to="/upload-userpost" class="baseBlueBtn story-list__btn">張貼動態</router-link>
       <ul class="story-list__wrap">
         <li
-v-if="hasUserInfo" class="story-list__mode"
+          v-if="hasUserInfo" class="story-list__mode"
           :class="{active:route.path=='/user-wall'}"
         >
           <router-link :to="curUserWallLink">
@@ -19,7 +19,7 @@ v-if="hasUserInfo" class="story-list__mode"
             <div class="story-list__mode-row">
               <i class="fa-regular fa-bell"></i>
             </div>
-            <h3 class="story-list__mode-name">追蹤名單</h3>
+            <h3 class="story-list__mode-name">我追蹤的名單</h3>
           </router-link>
         </li>
         <li class="story-list__mode" :class="{active:route.path=='/user-favorite'}">

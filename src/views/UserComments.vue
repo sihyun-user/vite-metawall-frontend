@@ -4,13 +4,16 @@
     <base-card v-for="comment in comments" :key="comment._id" class="user">
       <div class="user__info">
         <div class="user__info-photo">
-          <!-- <img src=""> -->
+          <base-userPhoto :user-photo="comment.user.photo"></base-userPhoto>
         </div>
         <div class="user__info-wrap">
           <h3 class="user__info-name">
             <router-link to="/">{{ comment.user.name }}</router-link>
           </h3>
-          <span class="user__info-time">留言時間: {{comment.createdAt}}</span>
+          <span class="user__info-time">
+            留言時間:
+            <base-formatTime :time="comment.createdAt"></base-formatTime>
+          </span>
         </div>
       </div>
       <div class="user__wrap">
@@ -34,24 +37,23 @@ import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import BaseCaption from '../components/ui/BaseCaption.vue'
 import BaseCard from '../components/ui/BaseCard.vue'
-// import moment from 'moment'
+import BaseUserPhoto from '../components/ui/BaseUserPhoto.vue'
+import BaseFormatTime from '../components/ui/BaseFormatTime.vue'
 export default {
   components: {
-    BaseCaption, BaseCard
+    BaseCaption, 
+    BaseCard,
+    BaseUserPhoto,
+    BaseFormatTime
   },
   setup () {
     const store = useStore()
     const comments = ref([])
 
     const isLoading = computed(() => store.getters.isLoading)
-    // const createdTime = computed(() => {
-    //   console.lgo(date)
-    //   return comments.value.filter(date => moment(date.createdAt).format('YYYY/MM/DD HH:mm'))
-    // })
 
     async function getCommentPostList () {
       comments.value = await store.dispatch('getCommentPostList')
-      // comments.value = comments.value.forEach(item => moment(item.createdAt).format('YYYY/MM/DD HH:mm'))
     }
 
     getCommentPostList()

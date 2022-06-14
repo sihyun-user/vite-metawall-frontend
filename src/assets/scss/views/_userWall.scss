@@ -36,7 +36,7 @@
 
       &--wrap {
         width: calc(100% - 40px);
-        padding: 16px;
+        padding: 15px;
         display: flex;
         justify-content: space-between;
       }
@@ -47,11 +47,25 @@
         justify-content: space-between;
 
         h3 {
+          font-size: 18px;
           font-weight: $bold;
         }
 
         span {
+          font-size: 14px;
           font-weight: $regular;
+          color: $color-gray-3;
+          cursor: pointer;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+
+      &--row {
+        & span:last-child {
+          margin-left: 15px;
         }
       }
 
@@ -62,6 +76,26 @@
         button {
           height: 35px;
         }
+      }
+    }
+  }
+
+  .myFollow {
+    &__user {
+      display: flex;
+      align-items: center;
+
+      &--photo {
+        width: 50px;
+        height: 50px;
+        border-radius: 100%;
+        border: 2px solid #000400;
+        margin-right: 15px;
+        overflow: hidden;
+      }
+
+      &:not(:last-child) {
+        margin-bottom: 15px;
       }
     }
   }
