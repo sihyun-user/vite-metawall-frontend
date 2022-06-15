@@ -26,7 +26,7 @@
     <!-- 貼文 -->
     <div v-if="posts && posts.length==0" class="no-info">目前尚無動態，新增一則貼文吧！</div>
     <section v-else>
-      <post-filter class="filter"></post-filter>
+      <post-filter class="filter" @filter-posts='searchPosts'></post-filter>
       <div v-for="post in posts" :key="post._id" class="postCard">
         <post-item
           :post-id="post._id"
@@ -76,6 +76,11 @@ export default {
     const posts = ref([])
     const followers = ref([])
     const following = ref([])
+    let sort = {
+      timeSort: 'desc',
+      content: '',
+      userId: ''
+    }
 
 
     const userId = computed(() => store.getters.userId)
@@ -123,6 +128,19 @@ export default {
       return followers.value.find(el => el.user._id == userId.value)
     }
 
+    // 搜尋貼文
+    function searchPosts (val) {
+      sort = {...val}
+      sort.userId = route.query.userId
+      getPosts()
+    }
+
+    // 取得貼文列表
+    async function getPosts () {
+      const result = await store.dispatch('getPosts', sort)
+      posts.value = result
+    }
+
     function handleShow (modeVal) {
       isShow.value = true
       mode.value = modeVal
@@ -147,6 +165,7 @@ export default {
       isCurrentUser,
       swtchLightBoxTitle,
       handleFollow,
+      searchPosts,
       handleShow,
       handleClose,
     }

@@ -327,8 +327,10 @@ export default createStore({
     async getPosts(context, payload) {
       try {
         context.commit('setIsLoading', true)
+        let { timeSort, content, userId } = payload
+        if (!userId) userId = ''
 
-        const query = `timeSort=${payload.timeSort}&q=${payload.content}`
+        const query = `timeSort=${timeSort}&q=${content}&userId=${userId}`
         const api = `${import.meta.env.VITE_APP_API}/api/posts?${query}`
         const res = await axios.get(api, {
           headers: {
