@@ -40,11 +40,12 @@
         cursor: pointer;
         display: flex;
         flex-direction: column;
-        text-align: center;
+        align-items: center;
 
         span {
           font-weight: $bold;
           margin-top: 4px;
+          text-align: center;
         }
       }
 
@@ -52,17 +53,20 @@
         margin-right: 35px;
 
         @include mobile {
-          margin-right: 12px;
+          margin-right: 15px;
         }
 
         & i {
           font-size: 24px;
           color: $color-secondary;
+
+          @include mobile {
+            font-size: 20px;
+          }
         }
       }
 
       &-check {
-
         &--icon {
           width: 24px;
           height: 24px;
@@ -71,8 +75,18 @@
           border-radius: 100%;
           text-align: center;
 
+          @include mobile {
+            width: 20px;
+            height: 20px;
+            line-height: 12px;
+          }
+
           & i {
             font-size: 15px;
+
+            @include mobile {
+              font-size: 14px;
+            }
           }
         }
       }

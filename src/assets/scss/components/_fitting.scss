@@ -69,7 +69,7 @@
 .lightBox {
   max-width: 480px;
   width: 100%;
-  max-height: calc(100vh - 100px);
+  // max-height: calc(100vh - 120px);
   background-color: $color-white;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
@@ -79,9 +79,14 @@
   transform: translateX(-50%);
   z-index: 11;
   overflow: hidden;
+  // overflow: auto;
+
+  // &::-webkit-scrollbar {
+  //   display: none;
+  // }
 
   @include mobile {
-    width: calc(100% - 36px);
+    width: calc(100% - 24px);
   }
 
   &__header {
@@ -119,9 +124,13 @@
 
   &__content {
     padding: 25px 18px;
+    max-height: calc(100vh - 160px);
+    overflow: auto;
 
-    max-height: 750px;
-    overflow-y: auto;
+    @include mobile {
+      max-height: calc(100vh - 125px);
+    }
+
     &::-webkit-scrollbar {
       display: none;
     }
@@ -164,7 +173,7 @@
   }
 }
 
-.no-info {
+.no-post {
   @include baseCard(40px 25px);
   font-weight: $regular;
   color: #9B9893;

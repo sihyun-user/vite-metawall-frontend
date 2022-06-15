@@ -13,7 +13,7 @@
         </div>
         <div class="user__details">
           <div class="user__details-favorite">
-            <i class="fa-regular fa-thumbs-up"></i>
+            <i class="fa-solid fa-pen"></i>
             <span>編輯</span>
           </div>
           <div class="user__details-check" @click="getOnePost(comment.post)">
