@@ -144,10 +144,10 @@ export default {
       userId, 
       isLoading, 
       isCurrentUser,
+      swtchLightBoxTitle,
       handleFollow,
       handleShow,
       handleClose,
-      swtchLightBoxTitle
     }
   }
 }

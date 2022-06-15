@@ -13,8 +13,8 @@
 
 <script>
 export default {
-  emits: ['close', 'confirm'],
   props: ['title'],
+  emits: ['close', 'confirm'],
   setup(_, context) {
     
     function tryClose () {

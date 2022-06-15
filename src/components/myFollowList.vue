@@ -1,7 +1,7 @@
 <template>
   <p v-if="follows.length == 0">{{ msg }}</p>
   <ul v-else class="myFollow">
-    <li class="myFollow__user" v-for="follow in follows" :key="follow.user._id">
+    <li v-for="follow in follows" :key="follow.user._id" class="myFollow__user">
       <div class="myFollow__user--photo">
         <base-userPhoto :user-photo="follow.user.photo"></base-userPhoto>
       </div>
@@ -16,10 +16,10 @@
 import { computed, toRefs } from 'vue'
 import BaseUserPhoto from './ui/BaseUserPhoto.vue'
 export default {
-  props: ['follows', 'select'],
   components: {
     BaseUserPhoto
   },
+  props: ['follows', 'select'],
   setup(props) {
     const { select } = toRefs(props)
 
