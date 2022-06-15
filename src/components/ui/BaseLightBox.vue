@@ -1,21 +1,32 @@
 <template>
   <section class="lightBox">
-    <slot></slot>
+    <div class="lightBox__header">
+      <h1>{{ title }}</h1>
+      <button @click="tryClose"><i class="fa-solid fa-x"></i></button>
+    </div>
+    <div class="lightBox__content">
+      <slot></slot>
+    </div>
   </section>
   <div class="maskMode"></div>
 </template>
 
 <script>
 export default {
+  emits: ['close', 'confirm'],
   props: ['title'],
-  methods: {
-    tryClose () {
-      const vm = this
-      vm.$emit('close')
-    },
-    tryConfirm () {
-      const vm = this
-      vm.$emit('confirm')
+  setup(_, context) {
+    
+    function tryClose () {
+      context.emit('close')
+    }
+
+    function tryConfirm () {
+      context.emit('confirm')
+    }
+
+    return {
+      tryClose
     }
   }
 }

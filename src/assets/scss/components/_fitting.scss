@@ -67,18 +67,54 @@
 
 // 彈窗
 .lightBox {
-  width: 400px;
+  width: 350px;
   height: auto;
   background-color: $color-white;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  padding: 20px 18px;
-
   position: fixed;
   top: 150px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 11;
+
+  &__header {
+    border-bottom: 1px solid $color-gray-5;
+    padding: 15px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    h1 {
+      font-size: 18px;
+      font-weight: $regular;
+    }
+
+    button {
+      width: 35px;
+      height: 35px;
+      line-height: 35px;
+      background-color: $color-gray-5;
+      border-radius: 100%;
+      text-align: center;
+      cursor: pointer;
+      position: absolute;
+      right: 7px;
+      top: 7px;
+    }
+
+    i {
+      font-size: 16px;
+      color: $color-gray-3;
+    }
+
+  }
+
+  &__content {
+    text-align: center;
+    padding: 25px 18px;
+  }
 }
 
 .caption {

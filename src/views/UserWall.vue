@@ -1,5 +1,6 @@
 <template>
   <section v-if="!isLoading" class="user-wall">
+    <!-- 追蹤資訊 -->
     <div class="follow">
       <div class="follow__content follow__info">
         <div class="follow__info--photo">
@@ -9,8 +10,8 @@
           <div class="follow__info--user">
             <h3>{{ user.name }}</h3>
             <div class="follow__info--row">
-              <span>{{ followers.length }} 粉絲</span>
-              <span>{{ following.length }} 追蹤</span>
+              <span @click="handleShow('followers')">{{ followers.length }} 粉絲</span>
+              <span @click="handleShow('following')">{{ following.length }} 追蹤</span>
             </div>
           </div>
           <div v-if="!isCurrentUser" class="follow__info--btn">
@@ -21,6 +22,7 @@
       </div>
       <div class="follow__bg"></div>
     </div>
+    <!-- 貼文 -->
     <div v-if="posts && posts.length==0" class="no-post">目前尚無動態，新增一則貼文吧！</div>
     <section v-else>
       <post-filter class="filter"></post-filter>
@@ -37,16 +39,10 @@
         >
       </post-card>
     </section>
-
-    <base-lightBox title="粉絲" v-if="!false">
-      <ul class="myFollow">
-        <li class="myFollow__user" v-for="follow in followers" :key="follow.user._id">
-          <div class="myFollow__user--photo">
-            <base-userPhoto :user-photo="follow.user.photo"></base-userPhoto>
-          </div>
-          <h2>{{ follow.user.name }}</h2>
-        </li>
-      </ul>
+    <!-- lightBox -->
+    <base-lightBox v-if="isShow" :title="swtchLightBoxTitle" @close="handleClose">
+      <my-followList v-if="mode =='followers'" :follows="followers" :select="'followers'"></my-followList>
+      <my-followList v-if="mode =='following'" :follows="following" :select="'following'"></my-followList>
     </base-lightBox>
   </section>
   <base-spinner v-else></base-spinner>
@@ -56,30 +52,44 @@
 import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
+import BaseLightBox from '../components/ui/BaseLightBox.vue'
+import BaseUserPhoto from '../components/ui/BaseUserPhoto.vue'
 import PostCard from '../components/PostCard.vue'
 import PostFilter from '../components/PostFilter.vue'
-import BaseUserPhoto from '../components/ui/BaseUserPhoto.vue'
+import myFollowList from '../components/myFollowList.vue'
 export default {
   components: {
     PostCard,
     PostFilter, 
-    BaseUserPhoto
+    BaseUserPhoto,
+    BaseLightBox,
+    myFollowList
   },
   setup () {
     const store = useStore()
     const route = useRoute()
+    const isfollowing = ref(false)
+    const isShow = ref(false)
+    const mode = ref('followers')
     const user = ref({})
     const posts = ref([])
     const followers = ref([])
     const following = ref([])
-    const isfollowing = ref(false)
+
 
     const userId = computed(() => store.getters.userId)
     const isLoading = computed(() => store.getters.isLoading)
     const isCurrentUser = computed(() => userId.value == user.value._id)
+    const swtchLightBoxTitle = computed(() => {
+      if (mode.value == 'followers') {
+        return '粉絲'
+      }
+      return '追蹤'
+    })
 
     watch(() => route.query, (newVal, oldVal) => {
       if (route.query.userId && oldVal !== newVal) {
+        isShow.value = false
         getUserWall()
       }
     })
@@ -93,8 +103,6 @@ export default {
       followers.value = result.user.followers
       following.value = result.user.following
       isfollowing.value = checkIsfollowing()
-
-      console.log(followers.value)
     }
 
     // 追蹤/取消追蹤朋友
@@ -114,9 +122,20 @@ export default {
       return followers.value.find(el => el.user._id == userId.value)
     }
 
+    function handleShow (modeVal) {
+      isShow.value = true
+      mode.value = modeVal
+    }
+
+    function handleClose() {
+      isShow.value = false
+    }
+
     getUserWall()
 
     return {
+      isShow,
+      mode,
       user, 
       posts, 
       followers,
@@ -125,7 +144,10 @@ export default {
       userId, 
       isLoading, 
       isCurrentUser,
-      handleFollow
+      handleFollow,
+      handleShow,
+      handleClose,
+      swtchLightBoxTitle
     }
   }
 }
