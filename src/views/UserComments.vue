@@ -2,53 +2,64 @@
   <section v-if="!isLoading" class="comment">
     <base-caption>我留言的貼文</base-caption>
     <base-card v-for="comment in comments" :key="comment._id" class="user">
-      <div class="user__info">
-        <div class="user__info-photo">
-          <base-userPhoto :user-photo="comment.user.photo"></base-userPhoto>
-        </div>
-        <div class="user__info-wrap">
-          <h3 class="user__info-name">
-            <router-link to="/">{{ comment.user.name }}</router-link>
-          </h3>
+      <div class="user__content">
+        <div class="user__info">
           <span class="user__info-time">
             留言時間:
             <base-formatTime :time="comment.createdAt"></base-formatTime>
           </span>
+          <p class="user__info-text">{{ comment.comment }}</p>
         </div>
-      </div>
-      <div class="user__wrap">
-        <div class="user__wrap-favorite">
-          <i class="fa-regular fa-thumbs-up"></i>
-          <span>取消</span>
-        </div>
-        <div class="user__wrap-check">
-          <div class="user__wrap-check--icon">
-            <i class="fa-solid fa-arrow-right-long"></i>
+        <div class="user__details">
+          <div class="user__details-favorite">
+            <i class="fa-regular fa-thumbs-up"></i>
+            <span>編輯</span>
           </div>
-          <span>查看</span>
+          <div class="user__details-check" @click="getOnePost(comment.post)">
+            <div class="user__details-check--icon">
+              <i class="fa-solid fa-arrow-right-long"></i>
+            </div>
+            <span>查看</span>
+          </div>
         </div>
       </div>
     </base-card>
+    <base-lightBox v-if="isShow" title="查看貼文">
+      <post-card
+      :post-id="post._id"
+      :user="post.user"
+      :likes="post.likes"
+      :content="post.content"
+      :post-image="post.image"
+      :comments="post.comments"
+      :created-at="post.createdAt"
+      >
+      </post-card>
+    </base-lightBox>
   </section>
   <base-spinner v-else></base-spinner>
 </template>
 <script>
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
-import BaseCaption from '../components/ui/BaseCaption.vue'
 import BaseCard from '../components/ui/BaseCard.vue'
-import BaseUserPhoto from '../components/ui/BaseUserPhoto.vue'
+import BaseCaption from '../components/ui/BaseCaption.vue'
+import BaseLightBox from '../components/ui/BaseLightBox.vue'
 import BaseFormatTime from '../components/ui/BaseFormatTime.vue'
+import PostCard from '../components/PostCard.vue'
 export default {
   components: {
-    BaseCaption, 
     BaseCard,
-    BaseUserPhoto,
-    BaseFormatTime
+    BaseCaption, 
+    BaseLightBox,
+    BaseFormatTime,
+    PostCard
   },
   setup () {
     const store = useStore()
     const comments = ref([])
+    const post = ref(null)
+    const isShow = ref(false)
 
     const isLoading = computed(() => store.getters.isLoading)
 
@@ -56,11 +67,20 @@ export default {
       comments.value = await store.dispatch('getCommentPostList')
     }
 
+    async function getOnePost (postId) {
+      post.value = await store.dispatch('getOnePost', { postId })
+      isShow.value = true
+      console.log(post.value)
+    }
+
     getCommentPostList()
 
     return {
+      isShow,
       comments,
-      isLoading
+      post,
+      isLoading,
+      getOnePost
     }
   }
 }

@@ -1,52 +1,38 @@
 .comment {
   .user {
     margin-bottom: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    &__content {
+      display: flex;
+      justify-content: space-between;
+    }
     
     &__info {
+      max-width: 350px;
+      width: 100%;
+      margin-right: 10px;
       display: flex;
-  
-      &-photo {
-        width: 45px;
-        height: 45px;
-        border-radius: 100%;
-        border: 2px solid $color-primary;
-        margin-right: 15px;
-        overflow: hidden;
-
-        @include mobile {
-          margin-right: 6px;
-        }
-      }
-  
-      &-wrap { 
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-      }
-
-      &-name {
-        a {
-          line-height: 1.4;
-          font-weight: $bold;
-  
-          &:hover {
-            color: $color-secondary;
-            text-decoration: underline;
-          }
-        }
-      }
+      flex-direction: column;
 
       &-time {
         font-size: 14px;
         font-weight: $regular;
         color: #9B9893;
       }
+
+      &-text {
+        line-height: 1.4;
+        font-weight: $regular;
+        margin-top: 10px;
+
+        display: -webkit-box;
+        -webkit-line-clamp: 1; //行數
+        -webkit-box-orient: vertical;
+        white-space: normal;
+        overflow: hidden;
+      }  
     }
 
-    &__wrap {
+    &__details {
       display: flex;
 
       &-favorite,
@@ -54,7 +40,7 @@
         cursor: pointer;
         display: flex;
         flex-direction: column;
-        align-items: center;
+        text-align: center;
 
         span {
           font-weight: $bold;

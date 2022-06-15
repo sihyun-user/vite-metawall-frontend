@@ -67,7 +67,7 @@
 
 // 彈窗
 .lightBox {
-  width: 350px;
+  min-width: 350px;
   height: auto;
   background-color: $color-white;
   border-radius: 8px;

@@ -345,6 +345,23 @@ export default createStore({
         alert('系統忙碌中，請稍後再試')
       }
     },
+    // 取得一則貼文
+    async getOnePost(context, payload) {
+      try {
+        console.log(payload)
+        const api = `${import.meta.env.VITE_APP_API}/api/post/${payload.postId}`
+        const res = await axios.get(api, {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+
+        checkConsole('取得一則貼文成功', res.data)
+        return res.data.data
+      } catch (err) {
+        checkConsole('取得一則貼文失敗', err.response)
+      }
+    },
     // 新增一則貼文
     async createPost (context, payload) {
       try {
