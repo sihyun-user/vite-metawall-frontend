@@ -1,5 +1,5 @@
 <template>
-  <base-card class="post">
+  <section class="post">
     <base-userHeader :user="user" :created-at="createdAt"></base-userHeader>
     <div class="post__content">
       <p class="post__content-text">
@@ -40,7 +40,7 @@
         </div>
       </div>
     </section>
-  </base-card>
+  </section>
 </template>
 
 <script>

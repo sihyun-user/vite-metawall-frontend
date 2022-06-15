@@ -67,16 +67,22 @@
 
 // 彈窗
 .lightBox {
-  min-width: 350px;
-  height: auto;
+  max-width: 480px;
+  width: 100%;
+  max-height: calc(100vh - 100px);
   background-color: $color-white;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   position: fixed;
-  top: 150px;
+  top: 60px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 11;
+  overflow: hidden;
+
+  @include mobile {
+    width: calc(100% - 36px);
+  }
 
   &__header {
     border-bottom: 1px solid $color-gray-5;
@@ -112,8 +118,13 @@
   }
 
   &__content {
-    text-align: center;
     padding: 25px 18px;
+
+    max-height: 750px;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 }
 
@@ -153,7 +164,7 @@
   }
 }
 
-.no-post {
+.no-info {
   @include baseCard(40px 25px);
   font-weight: $regular;
   color: #9B9893;

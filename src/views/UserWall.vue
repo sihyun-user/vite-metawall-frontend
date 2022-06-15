@@ -10,6 +10,7 @@
           <div class="follow__info--user">
             <h3>{{ user.name }}</h3>
             <div class="follow__info--row">
+              <span>{{ posts.length }} 貼文</span>
               <span @click="handleShow('followers')">{{ followers.length }} 粉絲</span>
               <span @click="handleShow('following')">{{ following.length }} 追蹤</span>
             </div>
@@ -23,21 +24,21 @@
       <div class="follow__bg"></div>
     </div>
     <!-- 貼文 -->
-    <div v-if="posts && posts.length==0" class="no-post">目前尚無動態，新增一則貼文吧！</div>
+    <div v-if="posts && posts.length==0" class="no-info">目前尚無動態，新增一則貼文吧！</div>
     <section v-else>
       <post-filter class="filter"></post-filter>
-      <post-card
-        v-for="post in posts"
-        :key="post._id"
-        :post-id="post._id"
-        :user="post.user"
-        :likes="post.likes"
-        :content="post.content"
-        :post-image="post.image"
-        :comments="post.comments"
-        :created-at="post.createdAt"
+      <div v-for="post in posts" :key="post._id" class="postCard">
+        <post-item
+          :post-id="post._id"
+          :user="post.user"
+          :likes="post.likes"
+          :content="post.content"
+          :post-image="post.image"
+          :comments="post.comments"
+          :created-at="post.createdAt"
         >
-      </post-card>
+        </post-item>
+      </div>
     </section>
     <!-- lightBox -->
     <base-lightBox v-if="isShow" :title="swtchLightBoxTitle" @close="handleClose">
@@ -54,12 +55,12 @@ import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import BaseLightBox from '../components/ui/BaseLightBox.vue'
 import BaseUserPhoto from '../components/ui/BaseUserPhoto.vue'
-import PostCard from '../components/PostCard.vue'
+import PostItem from '../components/PostItem.vue'
 import PostFilter from '../components/PostFilter.vue'
 import myFollowList from '../components/myFollowList.vue'
 export default {
   components: {
-    PostCard,
+    PostItem,
     PostFilter, 
     BaseUserPhoto,
     BaseLightBox,
@@ -106,9 +107,9 @@ export default {
     }
 
     // 追蹤/取消追蹤朋友
-    async function handleFollow (mode) {
+    async function handleFollow (val) {
       const user_id = route.query.userId
-      if (mode == 'follow') {
+      if (val == 'follow') {
         await store.dispatch('followUser', { user_id })
       } else {
         await store.dispatch('unfollowUser', { user_id })

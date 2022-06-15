@@ -39,6 +39,10 @@
         padding: 15px;
         display: flex;
         justify-content: space-between;
+
+        @include mobile {
+          padding: 12px 8px;
+        }
       }
 
       &--user {
@@ -55,7 +59,15 @@
           font-size: 14px;
           font-weight: $regular;
           color: $color-gray-3;
+        }
+
+        & span:not(:first-child) {
+          margin-left: 10px;
           cursor: pointer;
+
+          @include mobile {
+            margin-left: 5px;
+          }
 
           &:hover {
             text-decoration: underline;
@@ -63,15 +75,13 @@
         }
       }
 
-      &--row {
-        & span:last-child {
-          margin-left: 15px;
-        }
-      }
-
       &--btn {
         width: 95px;
         align-self: center;
+
+        @include mobile {
+          width: 85px;
+        }
 
         button {
           height: 35px;

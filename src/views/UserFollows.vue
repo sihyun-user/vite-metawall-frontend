@@ -1,6 +1,7 @@
 <template>
   <section v-if="!isLoading" class="follow">
     <base-caption>我追蹤的名單</base-caption>
+    <div v-if="following && following.length==0" class="no-info">目前尚無追蹤，追蹤吧！</div>
     <base-card v-for="follow in following" :key="follow.id" class="user">
       <div class="user__info">
         <div class="user__info-photo">
