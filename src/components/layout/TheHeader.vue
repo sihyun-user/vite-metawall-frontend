@@ -22,6 +22,7 @@
       </div>
     </nav>
   </header>
+  <div class="navMask"></div>
 </template>
 
 <script>

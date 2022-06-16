@@ -5,7 +5,7 @@
       <ul class="story-list__wrap">
         <li
           v-if="hasUserInfo" class="story-list__mode"
-          :class="{active:route.path=='/user-wall'}"
+          :class="{active:route.path=='/user-wall' && isCurrentUser}"
         >
           <router-link :to="curUserWallLink">
             <div class="story-list__mode-row">
@@ -56,17 +56,21 @@ export default {
     const route = useRoute()
     const store = useStore()
 
+    const userId = computed(() => store.getters.userId)
     const hasUserInfo = computed(() => store.getters.hasUserInfo)
     const userInfo = computed(() => store.getters.userInfo)
+    const isCurrentUser = computed(() => userId.value == route.query.userId)
 
     const curUserWallLink = computed(() => {
-      return `/user-wall?userId=${store.getters.userId}`
+      return `/user-wall?userId=${userId}`
     })
+    
 
     return {
       route,
       userInfo,
       hasUserInfo,
+      isCurrentUser,
       curUserWallLink
     }
   }
