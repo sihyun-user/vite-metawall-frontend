@@ -92,4 +92,25 @@
       }
     }
   }
+
+  .editComment {
+    h3 {
+      color: $color-red;
+      margin-bottom: 20px;
+      text-align: end;
+      cursor: pointer;
+    }
+
+    textarea {
+      font-size: 18px;
+      font-weight: $regular;
+      width: 100%;
+      height: 200px;
+      color: $color-primary;
+      border: 2px solid $color-primary;
+      background-color: $color-white;
+      padding: 14px 18px;
+      resize: none ;
+    }
+  } 
 }

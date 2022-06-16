@@ -16,7 +16,7 @@
             <i class="fa-solid fa-pen"></i>
             <span>編輯</span>
           </div>
-          <div class="user__details-check" @click="getOnePost(comment.post)">
+          <div class="user__details-check" @click="getPostLightBox(comment.post)">
             <div class="user__details-check--icon">
               <i class="fa-solid fa-arrow-right-long"></i>
             </div>
@@ -37,6 +37,13 @@
       >
       </post-item>
     </base-lightBox>
+    <base-lightBox title="修改貼文留言">
+      <div class="editComment">
+        <h3>刪除留言</h3>
+        <textarea v-model="content" placeholder="輸入您的貼文內容"></textarea>
+      </div>
+    </base-lightBox>
+    <!-- //TODO: 刪除貼文時呈現畫面 -->
   </section>
   <base-spinner v-else></base-spinner>
 </template>
@@ -59,19 +66,20 @@ export default {
   setup () {
     const store = useStore()
     const comments = ref([])
-    const post = ref(null)
+    const post = ref({})
     const isShow = ref(false)
-
+    const content = ref('ddd')
+    
     const isLoading = computed(() => store.getters.isLoading)
 
+    // 取得個人留言名單
     async function getCommentPostList () {
       comments.value = await store.dispatch('getCommentPostList')
     }
 
-    async function getOnePost (postId) {
-      post.value = await store.dispatch('getOnePost', { postId })
+    function getPostLightBox(data) {
+      post.value = data
       isShow.value = true
-      console.log(post.value)
     }
 
     function handleClose() {
@@ -84,9 +92,10 @@ export default {
       isShow,
       comments,
       post,
+      content,
       isLoading,
-      getOnePost,
-      handleClose
+      handleClose,
+      getPostLightBox
     }
   }
 }

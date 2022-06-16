@@ -347,7 +347,7 @@ export default createStore({
         alert('系統忙碌中，請稍後再試')
       }
     },
-    // 取得一則貼文
+    // 取得一則貼文 //!用不到
     async getOnePost(context, payload) {
       try {
         console.log(payload)
