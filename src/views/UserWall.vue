@@ -24,13 +24,15 @@
       <div class="follow__bg"></div>
     </div>
     <!-- 貼文 -->
-    <div v-if="posts && posts.length==0" class="no-info">目前尚無動態，新增一則貼文吧！</div>
+    <base-card v-if="posts && posts.length == 0" class="no-post">
+      目前尚無動態，新增一則貼文吧！
+    </base-card>
     <section v-else>
       <post-filter class="filter" @filter-posts='searchPosts'></post-filter>
       <div v-for="post in posts" :key="post._id" class="postCard">
         <post-item
+          :user="user"
           :post-id="post._id"
-          :user="post.user"
           :likes="post.likes"
           :content="post.content"
           :post-image="post.image"
@@ -41,7 +43,11 @@
       </div>
     </section>
     <!-- lightBox -->
-    <base-lightBox v-if="isShow" :title="swtchLightBoxTitle" @close="handleClose">
+    <base-lightBox v-if="isShow" 
+      :title="swtchLightBoxTitle" 
+      @close="handleClose"
+      class="userWall-lightBox"
+    >
       <my-followList v-if="mode =='followers'" :follows="followers" :select="'followers'"></my-followList>
       <my-followList v-if="mode =='following'" :follows="following" :select="'following'"></my-followList>
     </base-lightBox>
@@ -50,20 +56,22 @@
 </template>
 
 <script>
-import { ref, computed, watch } from 'vue'
+import { ref, reactive, computed, watch, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import BaseLightBox from '../components/ui/BaseLightBox.vue'
+import BaseCard from '../components/ui/BaseCard.vue'
 import BaseUserPhoto from '../components/ui/BaseUserPhoto.vue'
+import BaseLightBox from '../components/ui/BaseLightBox.vue'
 import PostItem from '../components/PostItem.vue'
 import PostFilter from '../components/PostFilter.vue'
 import myFollowList from '../components/myFollowList.vue'
 export default {
   components: {
-    PostItem,
-    PostFilter, 
+    BaseCard,
     BaseUserPhoto,
     BaseLightBox,
+    PostItem,
+    PostFilter,
     myFollowList
   },
   setup () {
@@ -72,20 +80,25 @@ export default {
     const isfollowing = ref(false)
     const isShow = ref(false)
     const mode = ref('followers')
-    const user = ref({})
     const posts = ref([])
-    const followers = ref([])
-    const following = ref([])
+    const user = reactive({
+      _id: '',
+      name: '',
+      photo: '',
+      followers: [],
+      following: [],
+    })
     let sort = {
       timeSort: 'desc',
       content: '',
       userId: ''
     }
 
+    const { followers, following } = toRefs(user)
 
     const userId = computed(() => store.getters.userId)
     const isLoading = computed(() => store.getters.isLoading)
-    const isCurrentUser = computed(() => userId.value == user.value._id)
+    const isCurrentUser = computed(() => userId.value == user._id)
     const swtchLightBoxTitle = computed(() => {
       if (mode.value == 'followers') {
         return '粉絲'
@@ -104,10 +117,13 @@ export default {
     async function getUserWall() {
       const user_id = route.query.userId
       const result = await store.dispatch('getUserWall', { user_id })
-      user.value = result.user
+      const { _id, name, photo, followers, following } = result.user
+      user._id = _id 
+      user.name = name
+      user.photo = photo
+      user.followers = followers
+      user.following = following
       posts.value = result.posts
-      followers.value = result.user.followers
-      following.value = result.user.following
       isfollowing.value = checkIsfollowing()
     }
 

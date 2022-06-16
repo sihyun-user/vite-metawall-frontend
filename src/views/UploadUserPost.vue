@@ -97,9 +97,9 @@ export default {
         if (!imageUrl) return
 
         store.dispatch('createPost', {
-            content: content.value,
-            image: imageUrl
-          })
+          content: content.value,
+          image: imageUrl
+        })
       }
     }
 

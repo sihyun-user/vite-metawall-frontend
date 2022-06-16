@@ -1,8 +1,8 @@
 <template>
-  <p v-if="follows.length == 0">{{ msg }}</p>
-  <ul v-else class="myFollow">
-    <li v-for="follow in follows" :key="follow.user._id" class="myFollow__user">
-      <div class="myFollow__user--photo">
+  <p v-if="follows.length == 0" class="followList-zero">{{ msg }}</p>
+  <ul v-else class="followList">
+    <li v-for="follow in follows" :key="follow.user._id" class="followList__user">
+      <div class="followList__user--photo">
         <base-userPhoto :user-photo="follow.user.photo"></base-userPhoto>
       </div>
       <router-link :to="{ path: '/user-wall', query: { userId: follow.user._id }}">

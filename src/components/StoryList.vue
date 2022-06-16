@@ -64,7 +64,6 @@ export default {
     const curUserWallLink = computed(() => {
       return `/user-wall?userId=${userId}`
     })
-    
 
     return {
       route,

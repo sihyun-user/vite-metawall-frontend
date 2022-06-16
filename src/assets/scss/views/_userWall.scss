@@ -1,5 +1,4 @@
 .user-wall {
-
   .follow {
     position: relative;
     margin-bottom: 20px;
@@ -90,7 +89,11 @@
     }
   }
 
-  .myFollow {
+  .followList {
+    &-zero {
+      text-align: center;
+    }
+
     &__user {
       display: flex;
       align-items: center;
