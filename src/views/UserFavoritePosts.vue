@@ -1,16 +1,19 @@
 <template>
-  <section class="favorite">
+  <section v-if="!isLoading" class="favorite">
     <base-caption>我按讚的貼文</base-caption>
-    <base-card v-for="user in users" :key="user.id" class="user">
+    <base-card v-for="post in posts" :key="post.id" class="user">
       <div class="user__info">
         <div class="user__info-photo">
-          <!-- <img src=""> -->
+          <base-userPhoto :user-photo="post.user.photo"></base-userPhoto>
         </div>
         <div class="user__info-wrap">
           <h3 class="user__info-name">
-            <router-link to="/">{{ user.name }}</router-link>
+            <router-link to="/">{{ post.user.name }}</router-link>
           </h3>
-          <span class="user__info-time">追蹤時間:2022/1/10 12:00</span>
+          <span class="user__info-time">
+            按讚時間
+            <base-formatTime :time="post.createdAt"></base-formatTime>
+            </span>
         </div>
       </div>
       <div class="user__wrap">
@@ -27,22 +30,39 @@
       </div>
     </base-card>
   </section>
+  <base-spinner v-else></base-spinner>
 </template>
 <script>
+import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
 import BaseCaption from '../components/ui/BaseCaption.vue'
 import BaseCard from '../components/ui/BaseCard.vue'
+import BaseUserPhoto from '../components/ui/BaseUserPhoto.vue'
+import BaseFormatTime from '../components/ui/BaseFormatTime.vue'
 export default {
   components: {
-    BaseCaption, BaseCard
+    BaseCaption, 
+    BaseCard,
+    BaseUserPhoto,
+    BaseFormatTime
   },
   setup () {
-    const users = [
-      { id: '01', name: '工程師皮卡' },
-      { id: '02', name: '寶可夢大師小智' }
-    ]
+    const store = useStore()
+    const posts = ref({})
+    const isShow = ref(false)
+
+    const isLoading = computed(() => store.getters.isLoading)
+
+    // 取得個人按讚名單
+    async function getLikePostList () {
+      posts.value = await store.dispatch('getLikePostList')
+    }
+
+    getLikePostList()
 
     return {
-      users
+      isLoading,
+      posts
     }
   }
 }
