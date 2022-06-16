@@ -7,6 +7,8 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  z-index: 10;
 
   nav {
     width: 870px;
@@ -65,12 +67,25 @@ header {
       position: absolute;
       left: 0;
       top: 40px;
-      z-index: 99;
+      z-index: 9;
+
+      @include mobile {
+        position: fixed;
+        top: 49px;
+        left: 0;
+        width: 100%;
+        z-index: 99;
+      }
 
       & li {
         height: 40px;
         line-height: 38px;
         text-align: center;
+
+        @include mobile {
+          height: 52px;
+          line-height: 50px;
+        }
 
         a {
           display: block;
@@ -95,6 +110,10 @@ header {
         left: 6px;
         top: 45px;
         z-index: 1;
+
+        @include mobile {
+          display: none;
+        }
       }
     }
   }

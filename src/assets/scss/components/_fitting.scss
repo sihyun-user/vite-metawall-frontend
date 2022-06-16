@@ -10,6 +10,22 @@
   z-index: 10;
 }
 
+.navMask {
+  display: none;
+  width: 100%;
+  min-height: 100vh;
+  background-color: $color-black;
+  opacity: 0.5;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9;
+
+  // @include mobile {
+  //   display: block;
+  // }
+}
+
 // input text
 .inputMode {
   font-size: 16px;
@@ -79,11 +95,6 @@
   transform: translateX(-50%);
   z-index: 11;
   overflow: hidden;
-  // overflow: auto;
-
-  // &::-webkit-scrollbar {
-  //   display: none;
-  // }
 
   @include mobile {
     width: calc(100% - 24px);
@@ -123,7 +134,7 @@
   }
 
   &__content {
-    padding: 25px 18px;
+    padding: 20px 18px;
     max-height: calc(100vh - 160px);
     overflow: auto;
 
