@@ -24,7 +24,7 @@
       <div class="follow__bg"></div>
     </div>
     <!-- 貼文 -->
-    <base-card v-if="posts && posts.length == 0" class="no-post">
+    <base-card v-if="posts && posts.length == 0" class="no-info">
       目前尚無動態，新增一則貼文吧！
     </base-card>
     <section v-else>

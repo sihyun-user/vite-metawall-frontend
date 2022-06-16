@@ -1,6 +1,6 @@
 <template>
   <section v-if="!isLoading" class="posts-wall">
-    <div v-if="posts && posts.length==0" class="no-info">目前尚無動態，新增一則貼文吧！</div>
+    <base-card v-if="posts && posts.length==0" class="no-info">目前尚無動態，新增一則貼文吧！</base-card>
     <section v-else>
       <post-filter class="filter" @filter-posts='searchPosts'></post-filter>
       <div v-for="post in posts" :key="post._id" class="postCard">
@@ -25,10 +25,12 @@ import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import PostItem from '../components/PostItem.vue'
 import PostFilter from '../components/PostFilter.vue'
+import BaseCard from '../components/ui/BaseCard.vue'
 export default {
   components: {
     PostItem, 
-    PostFilter
+    PostFilter,
+    BaseCard
   },
   setup () {
     const store = useStore()

@@ -1,7 +1,7 @@
 <template>
   <section v-if="!isLoading" class="comment">
     <base-caption>我留言的貼文</base-caption>
-    <div v-if="comments && comments.length==0" class="no-info">目前尚無留言，留言一則貼文吧！</div>
+    <base-card v-if="comments && comments.length==0" class="no-info">目前尚無留言，留言一則貼文吧！</base-card>
     <base-card v-for="comment in comments" :key="comment._id" class="user">
       <div class="user__content">
         <div class="user__info">
