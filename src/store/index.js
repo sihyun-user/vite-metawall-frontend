@@ -269,28 +269,8 @@ export default createStore({
         alert('系統忙碌中,請稍後在試')
       }
     },
-    // 新增一則貼文的留言 //todo: 即時留言更新
-    async addPostComment(context, payload) {
-      try {
-        const api = `${import.meta.env.VITE_APP_API}/api/post/${payload.postId}/comment`
-
-        const paramData = {
-          comment: payload.comment
-        }
-
-        const res = await axios.post(api, paramData, {
-          headers: {
-            Authorization: `Bearer ${context.getters.token}`
-          }
-        })
-
-        checkConsole('新增貼文的留言成功', res.data)
-      } catch (err) {
-        checkConsole('新增貼文的留言失敗', err.response)
-      }
-    },
     // 追蹤朋友
-    async followUser (context, payload) {
+    async followUser(context, payload) {
       try {
         const api = `${import.meta.env.VITE_APP_API}/api/user/${payload.user_id}/follow`
         const res = await axios.post(api, {}, {
@@ -307,7 +287,7 @@ export default createStore({
       }
     },
     // 取消追蹤朋友
-    async unfollowUser (context, payload) {
+    async unfollowUser(context, payload) {
       try {
         const api = `${import.meta.env.VITE_APP_API}/api/user/${payload.user_id}/follow`
         const res = await axios.delete(api, {
@@ -320,6 +300,23 @@ export default createStore({
         alert('取消追蹤成功')
       } catch (err) {
         checkConsole('取消追蹤朋友失敗', err.response)
+        alert('系統忙碌中，請稍後再試')
+      }
+    },
+    // 編輯一則個人留言 //TODO
+    async updatePostComment(context, payload) {
+      try {
+        const api = `${import.meta.env.VITE_APP_API}/api/user/comment/`
+        const res = await axios.patch(api,  {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+        
+        checkConsole('編輯一則留言成功', res.data)
+        alert('編輯留言成功')
+      } catch (err) {
+        checkConsole('編輯一則留言失敗', err.response)
         alert('系統忙碌中，請稍後再試')
       }
     },
@@ -365,7 +362,7 @@ export default createStore({
       }
     },
     // 新增一則貼文
-    async createPost (context, payload) {
+    async createPost(context, payload) {
       try {
         context.commit('setIsLoading', true)
         const api = `${import.meta.env.VITE_APP_API}/api/post`
@@ -390,8 +387,46 @@ export default createStore({
         checkConsole('新增貼文失敗', err.response)
       }
     },
+    // 新增一則貼文的留言 //TODO: 即時留言更新
+    async addPostComment(context, payload) {
+      try {
+        const api = `${import.meta.env.VITE_APP_API}/api/post/${payload.postId}/comment`
+
+        const paramData = {
+          comment: payload.comment
+        }
+
+        const res = await axios.post(api, paramData, {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+
+        checkConsole('新增貼文的留言成功', res.data)
+      } catch (err) {
+        checkConsole('新增貼文的留言失敗', err.response)
+      }
+    },
+    // 新增一則貼文的讚 //TODO
+    async addPostLike(context, payload) {
+      try {
+        console.log(payload.postId)
+        const api = `${import.meta.env.VITE_APP_API}/api/post/${payload.postId}/like`
+        const res = await axios.post(api,  {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+        
+        checkConsole('新增貼文的讚成功', res)
+        alert('新增貼文的讚成功')
+      } catch (err) {
+        checkConsole(' 新增貼文的讚失敗', err.response)
+        alert('系統忙碌中，請稍後再試')
+      }
+    },
     // 上傳圖片
-    async uploadImage (context, payload) {
+    async uploadImage(context, payload) {
       try {
         context.commit('setIsLoading', true)
         const api = `${import.meta.env.VITE_APP_API}/api/upload`

@@ -12,11 +12,11 @@
           <p class="user__info-text">{{ comment.comment }}</p>
         </div>
         <div class="user__details">
-          <div class="user__details-favorite">
+          <div class="user__details-edit" @click="switchLightBox('edit', comment.post)">
             <i class="fa-solid fa-pen"></i>
             <span>編輯</span>
           </div>
-          <div class="user__details-check" @click="getPostLightBox(comment.post)">
+          <div class="user__details-check" @click="switchLightBox('post', comment.post)">
             <div class="user__details-check--icon">
               <i class="fa-solid fa-arrow-right-long"></i>
             </div>
@@ -25,7 +25,9 @@
         </div>
       </div>
     </base-card>
-    <base-lightBox v-if="isShow" title="查看貼文" @close="handleClose">
+
+    <!-- light-box -->
+    <base-lightBox v-if="isShowPost" title="查看貼文" @close="handleClose">
       <post-item
         :post-id="post._id"
         :user="post.user"
@@ -37,13 +39,13 @@
       >
       </post-item>
     </base-lightBox>
-    <base-lightBox title="修改貼文留言">
+    <base-lightBox v-if="isShowEdit" title="修改留言" @close="handleClose">
       <div class="editComment">
         <h3>刪除留言</h3>
-        <textarea v-model="content" placeholder="輸入您的貼文內容"></textarea>
+        <textarea v-model="editComment" placeholder="輸入您的貼文內容"></textarea>
       </div>
     </base-lightBox>
-    <!-- //TODO: 刪除貼文時呈現畫面 -->
+    <!-- //TODO: 刪除貼文時(沒有貼文卻還有留言)呈現畫面 -->
   </section>
   <base-spinner v-else></base-spinner>
 </template>
@@ -67,8 +69,9 @@ export default {
     const store = useStore()
     const comments = ref([])
     const post = ref({})
-    const isShow = ref(false)
-    const content = ref('ddd')
+    const isShowPost = ref(false)
+    const isShowEdit = ref(false)
+    const editComment = ref('ddd')
     
     const isLoading = computed(() => store.getters.isLoading)
 
@@ -77,25 +80,35 @@ export default {
       comments.value = await store.dispatch('getCommentPostList')
     }
 
-    function getPostLightBox(data) {
+    // 編輯一則個人留言
+    async function updatePostComment (id) {
+      store.dispatch('updatePostComment', {
+        comment_id: id,
+        comment: editComment
+      })
+    }
+
+    function switchLightBox(type, data) {
+      type == 'edit' ?  isShowEdit.value = true : isShowPost.value = true
       post.value = data
-      isShow.value = true
     }
 
     function handleClose() {
-      isShow.value = false
+      isShowPost.value = false
+      isShowEdit.value = false
     }
 
     getCommentPostList()
 
     return {
-      isShow,
+      isShowPost,
+      isShowEdit,
       comments,
       post,
-      content,
+      editComment,
       isLoading,
       handleClose,
-      getPostLightBox
+      switchLightBox
     }
   }
 }

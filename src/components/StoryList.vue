@@ -62,7 +62,7 @@ export default {
     const isCurrentUser = computed(() => userId.value == route.query.userId)
 
     const curUserWallLink = computed(() => {
-      return `/user-wall?userId=${userId}`
+      return `/user-wall?userId=${userId.value}`
     })
 
     return {

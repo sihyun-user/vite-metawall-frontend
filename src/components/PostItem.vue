@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="post__state">
-      <div class="post__state-like">
+      <div class="post__state-like" @click="addPostLike">
         <i class="fa-regular fa-thumbs-up"></i>
         <!-- <i class="fa-solid fa-thumbs-up"></i> -->
         <span>{{ likes.length }}</span>
@@ -68,6 +68,7 @@ export default {
       msgMode.value = !msgMode.value
     }
 
+    // 新增一則貼文的留言 
     function addPostComment () {
       store.dispatch('addPostComment', { 
         postId: postId.value,
@@ -75,12 +76,18 @@ export default {
       })
     }
 
+    // 新增一則貼文的讚
+    function addPostLike () {
+      store.dispatch('addPostLike', { postId: postId.value })
+    }
+
     return {
       msgMode,
       commentContent,
       userInfo,
       switchMsgMode,
-      addPostComment
+      addPostComment,
+      addPostLike
     }
   }
 }

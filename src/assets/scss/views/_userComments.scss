@@ -35,7 +35,7 @@
     &__details {
       display: flex;
 
-      &-favorite,
+      &-edit,
       &-check {
         cursor: pointer;
         display: flex;
@@ -49,7 +49,7 @@
         }
       }
 
-      &-favorite {
+      &-edit {
         margin-right: 35px;
 
         @include mobile {

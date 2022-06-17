@@ -46,7 +46,6 @@
     <base-lightBox v-if="isShow" 
       :title="swtchLightBoxTitle" 
       @close="handleClose"
-      class="userWall-lightBox"
     >
       <my-followList v-if="mode =='followers'" :follows="followers" :select="'followers'"></my-followList>
       <my-followList v-if="mode =='following'" :follows="following" :select="'following'"></my-followList>
@@ -99,12 +98,7 @@ export default {
     const userId = computed(() => store.getters.userId)
     const isLoading = computed(() => store.getters.isLoading)
     const isCurrentUser = computed(() => userId.value == user._id)
-    const swtchLightBoxTitle = computed(() => {
-      if (mode.value == 'followers') {
-        return '粉絲'
-      }
-      return '追蹤'
-    })
+    const swtchLightBoxTitle = computed(() => mode.value == 'followers' ?  '粉絲' : '追蹤')
 
     watch(() => route.query, (newVal, oldVal) => {
       if (route.query.userId && oldVal !== newVal) {
