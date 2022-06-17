@@ -12,6 +12,8 @@
           :post-image="post.image"
           :comments="post.comments"
           :created-at="post.createdAt"
+          :show-comments="false"
+          @change-likes="updatePostLikes"
         >
         </post-item>
       </div>
@@ -21,7 +23,7 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import PostItem from '../components/PostItem.vue'
 import PostFilter from '../components/PostFilter.vue'
@@ -54,12 +56,22 @@ export default {
       posts.value = result
     }
 
+    // 更新貼文的讚(同步更新DOM)
+    function updatePostLikes (val) {
+      posts.value.find((post) => {
+        if (post._id == val.postId) {
+          post.likes = val.newLikes
+        }
+      })
+    }
+
     getPosts()
 
     return {
       posts,
       isLoading,
-      searchPosts
+      searchPosts,
+      updatePostLikes
     }
   }
 }

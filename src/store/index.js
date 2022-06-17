@@ -407,10 +407,26 @@ export default createStore({
         checkConsole('新增貼文的留言失敗', err.response)
       }
     },
-    // 新增一則貼文的讚 //TODO
+    // 取得一則貼文的按讚
+    async getPostLike(context, payload) {
+      try {
+        const api = `${import.meta.env.VITE_APP_API}/api/post/${payload.postId}/like`
+        const res = await axios.get(api, {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+        
+        checkConsole('取得貼文的讚成功', res)
+        return res.data.data.likes
+      } catch (err) {
+        checkConsole('取得貼文的讚失敗', err.response)
+        alert('系統忙碌中，請稍後再試')
+      }
+    },
+    // 新增一則貼文的讚
     async addPostLike(context, payload) {
       try {
-        console.log(payload.postId)
         const api = `${import.meta.env.VITE_APP_API}/api/post/${payload.postId}/like`
         const res = await axios.post(api, {}, {
           headers: {
@@ -419,9 +435,26 @@ export default createStore({
         })
         
         checkConsole('新增貼文的讚成功', res)
-        alert('新增貼文的讚成功')
+        return true
       } catch (err) {
-        checkConsole(' 新增貼文的讚失敗', err.response)
+        checkConsole('新增貼文的讚失敗', err.response)
+        alert('系統忙碌中，請稍後再試')
+      }
+    },
+    // 取消一則貼文的讚 //TODO
+    async canclePostLike(context, payload) {
+      try {
+        const api = `${import.meta.env.VITE_APP_API}/api/post/${payload.postId}/like`
+        const res = await axios.delete(api, {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+        
+        checkConsole('取消貼文的讚成功', res)
+        return true
+      } catch (err) {
+        checkConsole('取消貼文的讚失敗', err.response)
         alert('系統忙碌中，請稍後再試')
       }
     },

@@ -14,12 +14,12 @@
           <span class="user__info-time">
             按讚時間
             <base-formatTime :time="post.createdAt"></base-formatTime>
-            </span>
+          </span>
         </div>
       </div>
       <div class="user__wrap">
-        <div class="user__wrap-favorite">
-          <i class="fa-regular fa-thumbs-up"></i>
+        <div class="user__wrap-favorite" @click="canclePostLike(post._id)">
+          <i class="fa-solid fa-thumbs-up"></i>
           <span>取消</span>
         </div>
         <div class="user__wrap-check" @click="switchLightBox(post)">
@@ -41,6 +41,8 @@
         :post-image="postObj.image"
         :comments="postObj.comments"
         :created-at="postObj.createdAt"
+        :show-comments="true"
+        @change-likes="updatePostLikes"
       >
       </post-item>
     </base-lightBox>
@@ -78,8 +80,21 @@ export default {
       posts.value = await store.dispatch('getLikePostList')
     }
 
+    // 取消一則貼文的讚
+    async function canclePostLike (id) {
+      const result = await store.dispatch('canclePostLike', { postId: id })
+      if (!result) return
+
+      getLikePostList()
+    }
+
+    // 更新貼文的讚(重新取得按讚名單)
+    function updatePostLikes () {
+      isShowPost.value = false
+      getLikePostList()
+    }
+
     function switchLightBox(data) {
-      console.log(data)
       isShowPost.value = true
       postObj.value = data
     }
@@ -95,6 +110,8 @@ export default {
       posts,
       postObj,
       isShowPost,
+      canclePostLike,
+      updatePostLikes,
       switchLightBox,
       handleClose
     }

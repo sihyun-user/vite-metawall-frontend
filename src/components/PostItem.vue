@@ -10,17 +10,21 @@
       </div>
     </div>
     <div class="post__state">
-      <div class="post__state-like" @click="addPostLike">
+      <div v-if="!isLikePost" class="post__state-like" @click="addPostLike">
         <i class="fa-regular fa-thumbs-up"></i>
-        <!-- <i class="fa-solid fa-thumbs-up"></i> -->
         <span>{{ likes.length }}</span>
       </div>
+      <div v-else class="post__state-like" @click="canclePostLike">
+        <i class="fa-solid fa-thumbs-up"></i>
+        <span>{{ likes.length }}</span>
+      </div>
+
       <div class="post__state-msg" @click="switchMsgMode">
         <i class="fa-regular fa-comment"></i>
         <span>{{comments.length }} 則留言</span>
       </div>
     </div>
-    <section v-if="msgMode" class="post__commentWall">
+    <section v-if="isShowComments" class="post__commentWall">
       <div class="post__writeComment">
         <div class="post__writeComment-photo">
           <base-userPhoto :user-photo="userInfo.photo"></base-userPhoto>
@@ -44,7 +48,7 @@
 </template>
 
 <script>
-import { ref, toRefs, computed } from 'vue'
+import { ref, toRefs, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import BaseCard from './ui/BaseCard.vue'
 import BaseUserHeader from './ui/BaseUserHeader.vue'
@@ -55,17 +59,20 @@ export default {
     BaseUserHeader,
     BaseUserPhoto
   },
-  props: ['postId', 'user', 'likes', 'content', 'postImage', 'comments', 'createdAt'],
-  setup (props) {
-    const { postId } = toRefs(props)
+  emits: ['changeLikes'],
+  props: ['postId', 'user', 'likes', 'content', 'postImage', 'comments', 'createdAt', 'showComments'],
+  setup (props, context) {
+    const { postId, likes, showComments } = toRefs(props)
     const store = useStore()
-    const msgMode = ref(false)
+    const isShowComments = ref(false)
     const commentContent = ref('')
 
+    const userId = computed(() => store.getters.userId)
     const userInfo = computed(() => store.getters.userInfo)
+    const isLikePost = computed(() => likes.value.includes(userId.value))
 
     function switchMsgMode () {
-      msgMode.value = !msgMode.value
+      isShowComments.value = !isShowComments.value
     }
 
     // 新增一則貼文的留言 
@@ -76,18 +83,49 @@ export default {
       })
     }
 
-    // 新增一則貼文的讚
-    function addPostLike () {
-      store.dispatch('addPostLike', { postId: postId.value })
+    // 取得一則貼文的按讚
+    function getPostLike () {
+      return store.dispatch('getPostLike', { postId: postId.value })
     }
 
+    // 新增一則貼文的讚
+    async function addPostLike () {
+      const result = await store.dispatch('addPostLike', { postId: postId.value })
+      if (!result) return
+
+      handlePostLike()
+    }
+
+    // 取消一則貼文的讚
+    async function canclePostLike () {
+      const result = await store.dispatch('canclePostLike', { postId: postId.value })
+      if (!result) return
+
+      handlePostLike()
+    }
+
+    async function handlePostLike (action) {
+      const newLikes = await getPostLike()
+      if (!newLikes) return
+
+      context.emit('changeLikes', {
+        postId: postId.value,
+        newLikes
+      })
+    }
+
+    // 預設是否展開貼文留言
+    isShowComments.value = showComments.value
+
     return {
-      msgMode,
+      isShowComments,
       commentContent,
       userInfo,
+      isLikePost,
       switchMsgMode,
       addPostComment,
-      addPostLike
+      addPostLike,
+      canclePostLike
     }
   }
 }
