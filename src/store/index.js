@@ -412,7 +412,7 @@ export default createStore({
       try {
         console.log(payload.postId)
         const api = `${import.meta.env.VITE_APP_API}/api/post/${payload.postId}/like`
-        const res = await axios.post(api,  {
+        const res = await axios.post(api, {}, {
           headers: {
             Authorization: `Bearer ${context.getters.token}`
           }
