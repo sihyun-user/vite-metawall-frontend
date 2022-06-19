@@ -29,7 +29,7 @@
     </base-card>
     <section v-else>
       <post-filter class="filter" @filter-posts='searchPosts'></post-filter>
-      <div v-for="post in posts" :key="post._id" class="postCard">
+      <div v-for="post in posts" :key="post._id" class="userPost postCard">
         <post-item
           :user="user"
           :post-id="post._id"
@@ -38,17 +38,42 @@
           :post-image="post.image"
           :comments="post.comments"
           :created-at="post.createdAt"
+          :show-comments="false"
+          @change-likes="changePostLikes"
+          @change-comments="changePostComments"
         >
         </post-item>
+        <!-- 編輯貼文 -->
+        <div v-if="isCurrentUser" class="userPost__details">
+          <div class="userPost__details-edit" @click="handleEditPost(post)">
+            <i class="fa-solid fa-pen"></i>
+            <span>編輯</span>
+          </div>
+          <span class="userPost__details-delete" @click="deleteOnePost(post)">刪除</span>
+        </div>
       </div>
     </section>
     <!-- lightBox -->
-    <base-lightBox v-if="isShow" 
+    <base-lightBox v-if="isShowComments" 
       :title="swtchLightBoxTitle" 
       @close="handleClose"
     >
       <my-followList v-if="mode =='followers'" :follows="followers" :select="'followers'"></my-followList>
       <my-followList v-if="mode =='following'" :follows="following" :select="'following'"></my-followList>
+    </base-lightBox>
+
+    <base-lightBox v-if="isShowEdit"
+      title="編輯貼文" 
+      @close="handleClose"
+    >
+      <upload-post
+        action="update"
+        :postId="editPostContent.id"
+        :postContent="editPostContent.content" 
+        :postImage="editPostContent.image"
+        @handleUpdate="updatePost"
+      >
+      </upload-post>
     </base-lightBox>
   </section>
   <base-spinner v-else></base-spinner>
@@ -63,7 +88,8 @@ import BaseUserPhoto from '../components/ui/BaseUserPhoto.vue'
 import BaseLightBox from '../components/ui/BaseLightBox.vue'
 import PostItem from '../components/PostItem.vue'
 import PostFilter from '../components/PostFilter.vue'
-import myFollowList from '../components/myFollowList.vue'
+import myFollowList from '../components/MyFollowList.vue'
+import UploadPost from '../components/UploadPost.vue'
 export default {
   components: {
     BaseCard,
@@ -71,15 +97,22 @@ export default {
     BaseLightBox,
     PostItem,
     PostFilter,
-    myFollowList
+    myFollowList,
+    UploadPost
   },
   setup () {
     const store = useStore()
     const route = useRoute()
     const isfollowing = ref(false)
-    const isShow = ref(false)
+    const isShowEdit = ref(false)
+    const isShowComments = ref(false)
     const mode = ref('followers')
     const posts = ref([])
+    const editPostContent = reactive({
+      id:'',
+      content: '',
+      image: ''
+    })
     const user = reactive({
       _id: '',
       name: '',
@@ -102,10 +135,12 @@ export default {
 
     watch(() => route.query, (newVal, oldVal) => {
       if (route.query.userId && oldVal !== newVal) {
-        isShow.value = false
+        handleClose()
         getUserWall()
       }
     })
+
+    watch(isShowEdit, () => store.commit('setErrorMag', null))
 
     // 取得個人動態牆
     async function getUserWall() {
@@ -151,22 +186,83 @@ export default {
       posts.value = result
     }
 
+    // 刪除一則貼文
+    async function deleteOnePost (postData) {
+      const reault = await store.dispatch('deleteOnePost', { 
+        postId: postData._id,
+      })
+
+      if(!reault) return
+      getUserWall()
+    }
+
+    // 取得當下編輯貼文資料(lightBox)
+    function handleEditPost (postData) {
+      editPostContent.id = postData._id
+      editPostContent.content = postData.content
+      editPostContent.image = postData.image
+      isShowEdit.value = true
+    }
+
+    // 編輯一則貼文
+    async function updatePost (data) {
+      // 沒有編輯圖片
+      if (!data.image) {
+        data.image = editPostContent.image
+
+        const result = await store.dispatch('updatePost', data)
+        if (!result) return
+      } else {
+        // 有編輯圖片，重新上傳圖片
+        const imageUrl = await store.dispatch('uploadImage', data.image)
+        if (!imageUrl) return
+
+        data.image = imageUrl
+        const result = await store.dispatch('updatePost', data)
+        if (!result) return
+      }
+
+      handleClose()
+      getUserWall()
+    }
+
+    // 更新貼文的讚(同步更新DOM)
+    function changePostLikes (val) {
+      posts.value.find((post) => {
+        if (post._id == val.postId) {
+          post.likes = val.newLikes
+        }
+      })
+    }
+
+    // 更新貼文的留言(同步更新DOM)
+    function changePostComments (val) {
+      posts.value.find((post) => {
+        if (post._id == val.postId) {
+          post.comments = val.comments
+        }
+      })
+    }
+
     function handleShow (modeVal) {
-      isShow.value = true
+      isShowComments.value = true
       mode.value = modeVal
     }
 
     function handleClose() {
-      isShow.value = false
+      isShowEdit.value = false
+      isShowComments.value = false
     }
 
     getUserWall()
 
     return {
-      isShow,
+      isShowEdit,
+      isShowComments,
       mode,
       user, 
-      posts, 
+      posts,
+      editPostContent,
       followers,
       following,
       isfollowing,
@@ -176,6 +272,11 @@ export default {
       swtchLightBoxTitle,
       handleFollow,
       searchPosts,
+      handleEditPost,
+      deleteOnePost,
+      updatePost,
+      changePostLikes,
+      changePostComments,
       handleShow,
       handleClose,
     }

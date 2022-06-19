@@ -53,10 +53,10 @@ export default {
   setup () {
     const store = useStore()
     const mode = ref('login')
-    const name = ref('red')
-    const email = ref('red@gmail.com')
-    const password = ref('red123456')
-    const confirmPassword = ref('red123456')
+    const name = ref('')
+    const email = ref('')
+    const password = ref('')
+    const confirmPassword = ref('')
 
     const isLoading = computed(() => store.getters.isLoading)
     const errorMsg = computed(() => store.getters.errorMsg)

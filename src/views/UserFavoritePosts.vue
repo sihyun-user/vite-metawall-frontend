@@ -42,7 +42,8 @@
         :comments="postObj.comments"
         :created-at="postObj.createdAt"
         :show-comments="true"
-        @change-likes="updatePostLikes"
+        @change-likes="changePostLikes"
+        @change-comments="changePostComments"
       >
       </post-item>
     </base-lightBox>
@@ -89,9 +90,18 @@ export default {
     }
 
     // 更新貼文的讚(重新取得按讚名單)
-    function updatePostLikes () {
+    function changePostLikes () {
       isShowPost.value = false
       getLikePostList()
+    }
+
+     // 更新貼文的留言(同步更新DOM)
+    function changePostComments (val) {
+      posts.value.find((post) => {
+        if (post._id == val.postId) {
+          post.comments = val.comments
+        }
+      })
     }
 
     function switchLightBox(data) {
@@ -111,7 +121,8 @@ export default {
       postObj,
       isShowPost,
       canclePostLike,
-      updatePostLikes,
+      changePostLikes,
+      changePostComments,
       switchLightBox,
       handleClose
     }

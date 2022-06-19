@@ -12,11 +12,11 @@
           <p class="user__info-text">{{ comment.comment }}</p>
         </div>
         <div class="user__details">
-          <div class="user__details-edit" @click="switchLightBox('edit', comment.post)">
+          <div class="user__details-edit" @click="getEditLightBox(comment)">
             <i class="fa-solid fa-pen"></i>
             <span>編輯</span>
           </div>
-          <div class="user__details-check" @click="switchLightBox('post', comment.post)">
+          <div class="user__details-check" @click="getPostLightBox(comment.post)">
             <div class="user__details-check--icon">
               <i class="fa-solid fa-arrow-right-long"></i>
             </div>
@@ -36,13 +36,19 @@
         :post-image="post.image"
         :comments="post.comments"
         :created-at="post.createdAt"
+        :show-comments="true"
+        @change-likes="changePostLikes"
+        @change-comments="changePostComments"
       >
       </post-item>
     </base-lightBox>
-    <base-lightBox v-if="isShowEdit" title="修改留言" @close="handleClose">
+    <base-lightBox v-if="isShowEdit" title="編輯留言" @close="handleClose">
       <div class="editComment">
-        <h3>刪除留言</h3>
-        <textarea v-model="editComment" placeholder="輸入您的貼文內容"></textarea>
+        <h3 @click="canclePostComment">刪除留言</h3>
+        <textarea v-model="editComment" placeholder="輸入您的留言內容"></textarea>
+        <div class="editComment__btn">
+          <button class="baseGrayBtn" @click="updatePostComment">送出留言</button>
+        </div>
       </div>
     </base-lightBox>
     <!-- //TODO: 刪除貼文時(沒有貼文卻還有留言)呈現畫面 -->
@@ -69,9 +75,10 @@ export default {
     const store = useStore()
     const comments = ref([])
     const post = ref({})
+    const editComment = ref('')
+    const selectCommentId = ref('')
     const isShowPost = ref(false)
     const isShowEdit = ref(false)
-    const editComment = ref('ddd')
     
     const isLoading = computed(() => store.getters.isLoading)
 
@@ -81,16 +88,59 @@ export default {
     }
 
     // 編輯一則個人留言
-    async function updatePostComment (id) {
-      store.dispatch('updatePostComment', {
-        comment_id: id,
-        comment: editComment
+    async function updatePostComment () {
+      isShowEdit.value = false
+
+      const result = await store.dispatch('updatePostComment', {
+        commentId: selectCommentId.value,
+        comment: editComment.value
+      })
+      if (!result) return
+
+      getCommentPostList()
+    }
+
+    // 刪除一則個人留言
+    async function canclePostComment () {
+      isShowEdit.value = false
+
+      const result = await store.dispatch('canclePostComment', { 
+        commentId: selectCommentId.value
+      })
+      if (!result) return
+
+      getCommentPostList()
+    }
+
+    // 更新貼文的讚(同步更新DOM)
+    function changePostLikes (val) {
+      comments.value.find((comment) => {
+        const selectPost = comment.post
+        if (selectPost._id == val.postId) {
+          selectPost.likes = val.newLikes
+        }
       })
     }
 
-    function switchLightBox(type, data) {
-      type == 'edit' ?  isShowEdit.value = true : isShowPost.value = true
-      post.value = data
+    // 更新貼文的留言(同步更新DOM)
+    function changePostComments (val) {
+      comments.value.find((comment) => {
+        const selectPost = comment.post
+        if (selectPost._id == val.postId) {
+          selectPost.comments = val.comments
+        }
+      })
+    }
+
+    function getPostLightBox(postData) {
+      isShowPost.value = true
+      post.value = postData
+    }
+
+    function getEditLightBox(commentData) {
+      isShowEdit.value = true
+      selectCommentId.value = commentData._id
+      editComment.value = commentData.comment
     }
 
     function handleClose() {
@@ -107,8 +157,13 @@ export default {
       post,
       editComment,
       isLoading,
-      handleClose,
-      switchLightBox
+      updatePostComment,
+      canclePostComment,
+      changePostLikes,
+      changePostComments,
+      getPostLightBox,
+      getEditLightBox,
+      handleClose
     }
   }
 }

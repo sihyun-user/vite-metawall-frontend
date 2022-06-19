@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { ref, toRefs, computed, onMounted } from 'vue'
+import { ref, toRefs, computed } from 'vue'
 import { useStore } from 'vuex'
 import BaseCard from './ui/BaseCard.vue'
 import BaseUserHeader from './ui/BaseUserHeader.vue'
@@ -59,8 +59,17 @@ export default {
     BaseUserHeader,
     BaseUserPhoto
   },
-  emits: ['changeLikes'],
-  props: ['postId', 'user', 'likes', 'content', 'postImage', 'comments', 'createdAt', 'showComments'],
+  emits: ['changeLikes', 'changeComments'],
+  props: {
+    postId: String,
+    user: Object,
+    likes: Array,
+    content: String,
+    postImage: String,
+    comments: Object,
+    createdAt: String,
+    showComments: Boolean
+  },
   setup (props, context) {
     const { postId, likes, showComments } = toRefs(props)
     const store = useStore()
@@ -76,16 +85,22 @@ export default {
     }
 
     // 新增一則貼文的留言 
-    function addPostComment () {
-      store.dispatch('addPostComment', { 
+    async function addPostComment () {
+      await store.dispatch('addPostComment', { 
         postId: postId.value,
         comment: commentContent.value
       })
-    }
 
-    // 取得一則貼文的按讚
-    function getPostLike () {
-      return store.dispatch('getPostLike', { postId: postId.value })
+      commentContent.value = ''
+
+      // 取得貼文的留言
+      const result = await store.dispatch('getOnePost', { postId: postId.value })
+      if (!result) return
+      
+      context.emit('changeComments' , {
+        postId: result._id,
+        comments: result.comments
+      })
     }
 
     // 新增一則貼文的讚
@@ -103,14 +118,16 @@ export default {
 
       handlePostLike()
     }
-
+    
+    // 取得一則貼文的按讚
     async function handlePostLike (action) {
-      const newLikes = await getPostLike()
-      if (!newLikes) return
+      // 取得貼文的讚
+      const result = await store.dispatch('getOnePost', { postId: postId.value })
+      if (!result) return
 
       context.emit('changeLikes', {
         postId: postId.value,
-        newLikes
+        newLikes: result.likes
       })
     }
 

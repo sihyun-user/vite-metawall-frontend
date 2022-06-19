@@ -120,6 +120,60 @@
       }
     }
   }
+
+  .userPost {
+    position: relative;
+
+    &__details {
+      display: flex;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+  
+      &-edit {
+        cursor: pointer;
+        margin-right: 12px;
+  
+        i {
+          margin-right: 5px;
+        }
+      }
+  
+      &-delete {
+        cursor: pointer;
+  
+        &:hover {
+          color: $color-red;
+        }
+      }
+    }
+  }
+
+  .editPost {
+    h3 {
+      color: $color-red;
+      margin-bottom: 20px;
+      text-align: end;
+      cursor: pointer;
+    }
+
+    textarea {
+      font-size: 18px;
+      font-weight: $regular;
+      width: 100%;
+      height: 200px;
+      color: $color-primary;
+      border: 2px solid $color-primary;
+      background-color: $color-white;
+      padding: 14px 18px;
+      resize: none ;
+    }
+
+    button {
+      margin-top: 35px;
+    }
+  }
+
   
   .filter {
     margin-bottom: 15px;

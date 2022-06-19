@@ -10,8 +10,9 @@
     width: 155px;
     max-width: 100%;
     height: 46px;
-    position: relative;
     margin-right: 5px;
+    position: relative;
+    z-index: 1;
 
     @include mobile {
       width: 100%;

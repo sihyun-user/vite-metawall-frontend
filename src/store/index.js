@@ -79,6 +79,7 @@ export default createStore({
         })
 
         context.commit('setIsLoading', false)
+        context.dispatch('getUserInfo')
         checkConsole('登入成功', res.data)
         router.push('posts-wall')
         alert('登入成功')
@@ -148,6 +149,7 @@ export default createStore({
             Authorization: `Bearer ${context.getters.token}`
           }
         })
+
         context.commit('setUserInfo', res.data.data.user)
         checkConsole('取得會員資料成功', res.data)
         return res.data.data
@@ -303,20 +305,50 @@ export default createStore({
         alert('系統忙碌中，請稍後再試')
       }
     },
-    // 編輯一則個人留言 //TODO
+    // 編輯一則個人留言
     async updatePostComment(context, payload) {
       try {
-        const api = `${import.meta.env.VITE_APP_API}/api/user/comment/`
-        const res = await axios.patch(api,  {
+        context.commit('setIsLoading', true)
+
+        const api = `${import.meta.env.VITE_APP_API}/api/user/comment/${payload.commentId}`
+        const paramData = {
+          comment: payload.comment
+        }
+
+        const res = await axios.patch(api, paramData, {
           headers: {
             Authorization: `Bearer ${context.getters.token}`
           }
         })
         
         checkConsole('編輯一則留言成功', res.data)
-        alert('編輯留言成功')
+        return true
       } catch (err) {
+        context.commit('setIsLoading', false)
         checkConsole('編輯一則留言失敗', err.response)
+        alert('系統忙碌中，請稍後再試')
+      }
+    },
+    // 刪除一則個人留言
+    async canclePostComment(context, payload) {
+      try {
+        context.commit('setIsLoading', true)
+
+        const api = `${import.meta.env.VITE_APP_API}/api/user/comment/${payload.commentId}`
+        let check = confirm('是否要刪除此則留言')
+        if (!check) return
+
+        const res = await axios.delete(api, {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+        
+        checkConsole('刪除一則留言成功', res.data)
+        return true
+      } catch (err) {
+        context.commit('setIsLoading', false)
+        checkConsole('刪除一則留言失敗', err.response)
         alert('系統忙碌中，請稍後再試')
       }
     },
@@ -344,10 +376,9 @@ export default createStore({
         alert('系統忙碌中，請稍後再試')
       }
     },
-    // 取得一則貼文 //!用不到
+    // 取得一則貼文
     async getOnePost(context, payload) {
       try {
-        console.log(payload)
         const api = `${import.meta.env.VITE_APP_API}/api/post/${payload.postId}`
         const res = await axios.get(api, {
           headers: {
@@ -379,7 +410,7 @@ export default createStore({
 
         context.commit('setIsLoading', false)
         checkConsole('新增貼文成功', res.data)
-        router.push('/posts-wall')
+        router.push('posts-wall')
       } catch (err) {
         const message = err.response.data.message
         context.commit('setIsLoading', false)
@@ -387,7 +418,55 @@ export default createStore({
         checkConsole('新增貼文失敗', err.response)
       }
     },
-    // 新增一則貼文的留言 //TODO: 即時留言更新
+    // 編輯一則貼文
+    async updatePost(context, payload) {
+      try {
+        context.commit('setIsLoading', true)
+        const api = `${import.meta.env.VITE_APP_API}/api/post/${payload.postId}`
+        const paramData = {
+          content: payload.content,
+          image: payload.image
+        }
+
+        const res = await axios.patch(api, paramData, {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+        
+        context.commit('setIsLoading', false)
+        checkConsole('編輯一則貼文成功', res.data)
+        return true
+      } catch (err) {
+        context.commit('setIsLoading', false)
+        checkConsole('編輯一則貼文失敗', err.response)
+        alert('系統忙碌中，請稍後再試')
+      }
+    },
+    // 刪除一則貼文
+    async deleteOnePost(context, payload) {
+      try {
+        context.commit('setIsLoading', true)
+        const api = `${import.meta.env.VITE_APP_API}/api/post/${payload.postId}`
+        let check = confirm('是否要刪除此則貼文')
+        if (!check) return
+
+        const res = await axios.delete(api, {
+          headers: {
+            Authorization: `Bearer ${context.getters.token}`
+          }
+        })
+        
+        context.commit('setIsLoading', false)
+        checkConsole('刪除一則貼文成功', res.data)
+        return true
+      } catch (err) {
+        context.commit('setIsLoading', false)
+        checkConsole('刪除一則貼文失敗', err.response)
+        alert('系統忙碌中，請稍後再試')
+      }
+    },
+    // 新增一則貼文的留言
     async addPostComment(context, payload) {
       try {
         const api = `${import.meta.env.VITE_APP_API}/api/post/${payload.postId}/comment`
@@ -407,23 +486,6 @@ export default createStore({
         checkConsole('新增貼文的留言失敗', err.response)
       }
     },
-    // 取得一則貼文的按讚
-    async getPostLike(context, payload) {
-      try {
-        const api = `${import.meta.env.VITE_APP_API}/api/post/${payload.postId}/like`
-        const res = await axios.get(api, {
-          headers: {
-            Authorization: `Bearer ${context.getters.token}`
-          }
-        })
-        
-        checkConsole('取得貼文的讚成功', res)
-        return res.data.data.likes
-      } catch (err) {
-        checkConsole('取得貼文的讚失敗', err.response)
-        alert('系統忙碌中，請稍後再試')
-      }
-    },
     // 新增一則貼文的讚
     async addPostLike(context, payload) {
       try {
@@ -441,7 +503,7 @@ export default createStore({
         alert('系統忙碌中，請稍後再試')
       }
     },
-    // 取消一則貼文的讚 //TODO
+    // 取消一則貼文的讚
     async canclePostLike(context, payload) {
       try {
         const api = `${import.meta.env.VITE_APP_API}/api/post/${payload.postId}/like`

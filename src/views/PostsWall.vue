@@ -13,7 +13,8 @@
           :comments="post.comments"
           :created-at="post.createdAt"
           :show-comments="false"
-          @change-likes="updatePostLikes"
+          @change-likes="changePostLikes"
+          @change-comments="changePostComments"
         >
         </post-item>
       </div>
@@ -57,10 +58,19 @@ export default {
     }
 
     // 更新貼文的讚(同步更新DOM)
-    function updatePostLikes (val) {
+    function changePostLikes (val) {
       posts.value.find((post) => {
         if (post._id == val.postId) {
           post.likes = val.newLikes
+        }
+      })
+    }
+
+    // 更新貼文的留言(同步更新DOM)
+    function changePostComments (val) {
+      posts.value.find((post) => {
+        if (post._id == val.postId) {
+          post.comments = val.comments
         }
       })
     }
@@ -71,7 +81,8 @@ export default {
       posts,
       isLoading,
       searchPosts,
-      updatePostLikes
+      changePostLikes,
+      changePostComments
     }
   }
 }
