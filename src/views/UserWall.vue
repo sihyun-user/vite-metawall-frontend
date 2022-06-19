@@ -59,8 +59,8 @@
       :title="swtchLightBoxTitle" 
       @close="handleClose"
     >
-      <!-- <my-followList v-if="mode =='followers'" :follows="followers" :select="'followers'"></my-followList>
-      <my-followList v-if="mode =='following'" :follows="following" :select="'following'"></my-followList> -->
+      <my-followList v-if="mode =='followers'" :follows="followers" :select="'followers'"></my-followList>
+      <my-followList v-if="mode =='following'" :follows="following" :select="'following'"></my-followList>
     </base-lightBox>
 
     <base-lightBox
@@ -90,7 +90,7 @@ import BaseUserPhoto from '../components/ui/BaseUserPhoto.vue'
 import BaseLightBox from '../components/ui/BaseLightBox.vue'
 import PostItem from '../components/PostItem.vue'
 import PostFilter from '../components/PostFilter.vue'
-// import MyFollowList from '../components/MyFollowList.vue'
+import MyFollowList from '../components/MyFollowList.vue'
 import UploadPost from '../components/UploadPost.vue'
 export default {
   components: {
@@ -99,7 +99,7 @@ export default {
     BaseLightBox,
     PostItem,
     PostFilter,
-    // MyFollowList,
+    MyFollowList,
     UploadPost
   },
   setup () {

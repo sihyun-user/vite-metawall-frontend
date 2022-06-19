@@ -1,15 +1,17 @@
 <template>
+<section>
   <p v-if="follows.length == 0" class="followList-zero">{{ msg }}</p>
   <ul v-else class="followList">
     <li v-for="follow in follows" :key="follow.user._id" class="followList__user">
       <div class="followList__user--photo">
         <base-userPhoto :user-photo="follow.user.photo"></base-userPhoto>
       </div>
-      <router-link :to="{ path: '/user-wall', query: { userId: follow.user._id }}">
+      <!-- <router-link :to="{ path: '/user-wall', query: { userId: follow.user._id }}">
         {{ follow.user.name }}
-      </router-link>
+      </router-link> -->
     </li>
   </ul>
+</section>
 </template>
 
 <script>
