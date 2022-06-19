@@ -19,7 +19,10 @@ export default {
   components: {
     BaseUserPhoto
   },
-  props: ['follows', 'select'],
+  props: {
+    follows:  Object,
+    select: String
+  },
   setup(props) {
     const { select } = toRefs(props)
 

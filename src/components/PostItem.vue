@@ -50,16 +50,13 @@
 <script>
 import { ref, toRefs, computed } from 'vue'
 import { useStore } from 'vuex'
-import BaseCard from './ui/BaseCard.vue'
 import BaseUserHeader from './ui/BaseUserHeader.vue'
 import BaseUserPhoto from './ui/BaseUserPhoto.vue'
 export default {
   components: {
-    BaseCard,
     BaseUserHeader,
     BaseUserPhoto
   },
-  emits: ['changeLikes', 'changeComments'],
   props: {
     postId: String,
     user: Object,
@@ -70,6 +67,7 @@ export default {
     createdAt: String,
     showComments: Boolean
   },
+  emits: ['changeLikes', 'changeComments'],
   setup (props, context) {
     const { postId, likes, showComments } = toRefs(props)
     const store = useStore()
@@ -120,7 +118,7 @@ export default {
     }
     
     // 取得一則貼文的按讚
-    async function handlePostLike (action) {
+    async function handlePostLike () {
       // 取得貼文的讚
       const result = await store.dispatch('getOnePost', { postId: postId.value })
       if (!result) return

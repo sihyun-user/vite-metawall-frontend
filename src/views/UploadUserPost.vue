@@ -2,16 +2,14 @@
   <section v-if="!isLoading" class="upload-userPost">
     <base-caption>張貼動態</base-caption>
     <base-card class="post">
-      <upload-post
-      @handleCreate="createPost"
-      >
+      <upload-post @handle-create="createPost">
       </upload-post>
     </base-card>
   </section>
   <base-spinner v-else></base-spinner>
 </template>
 <script>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 import BaseCaption from '../components/ui/BaseCaption.vue'
 import BaseCard from '../components/ui/BaseCard.vue'

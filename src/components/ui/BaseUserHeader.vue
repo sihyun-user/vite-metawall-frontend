@@ -23,7 +23,10 @@ export default {
     BaseUserPhoto,
     BaseFormatTime
   },
-  props: ['user', 'createdAt'],
+  props: {
+    user: Object,
+    createdAt: String
+  },
   setup(props) {
     const { _id, name, photo } = toRefs(props.user);
 

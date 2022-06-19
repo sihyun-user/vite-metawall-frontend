@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import PostItem from '../components/PostItem.vue'
 import PostFilter from '../components/PostFilter.vue'

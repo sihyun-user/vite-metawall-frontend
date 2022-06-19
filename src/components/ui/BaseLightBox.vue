@@ -13,17 +13,16 @@
 
 <script>
 export default {
-  props: ['title'],
-  emits: ['close', 'confirm'],
+  props: {
+    title: String
+  },
+  emits: ['close'],
   setup(_, context) {
     
     function tryClose () {
       context.emit('close')
     }
 
-    function tryConfirm () {
-      context.emit('confirm')
-    }
 
     return {
       tryClose

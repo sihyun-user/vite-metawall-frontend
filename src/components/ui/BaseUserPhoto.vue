@@ -5,6 +5,8 @@
 
 <script>
 export default {
-  props: ['userPhoto']
+  props: {
+    userPhoto: String
+  }
 }
 </script>

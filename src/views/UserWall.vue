@@ -54,7 +54,8 @@
       </div>
     </section>
     <!-- lightBox -->
-    <base-lightBox v-if="isShowComments" 
+    <base-lightBox
+      v-if="isShowComments" 
       :title="swtchLightBoxTitle" 
       @close="handleClose"
     >
@@ -62,16 +63,17 @@
       <my-followList v-if="mode =='following'" :follows="following" :select="'following'"></my-followList>
     </base-lightBox>
 
-    <base-lightBox v-if="isShowEdit"
+    <base-lightBox
+      v-if="isShowEdit"
       title="編輯貼文" 
       @close="handleClose"
     >
       <upload-post
         action="update"
-        :postId="editPostContent.id"
-        :postContent="editPostContent.content" 
-        :postImage="editPostContent.image"
-        @handleUpdate="updatePost"
+        :post-id="editPostContent.id"
+        :post-content="editPostContent.content" 
+        :post-image="editPostContent.image"
+        @handle-update="updatePost"
       >
       </upload-post>
     </base-lightBox>

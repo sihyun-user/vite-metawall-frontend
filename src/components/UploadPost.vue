@@ -30,13 +30,7 @@
 <script>
 import { ref, computed, toRefs } from 'vue'
 import { useStore } from 'vuex'
-import BaseCaption from '../components/ui/BaseCaption.vue'
-import BaseCard from '../components/ui/BaseCard.vue'
 export default {
-  components: {
-    BaseCaption, BaseCard
-  },
-  emits: ['handleCreate', 'handleUpdate'],
   props: {
     action: {
       type: String
@@ -53,6 +47,7 @@ export default {
       default: ''
     }
   },
+  emits: ['handleCreate', 'handleUpdate'],
   setup(props, context) {
     const store = useStore()
     const imageFile = ref(null)
