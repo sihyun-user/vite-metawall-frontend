@@ -88,7 +88,7 @@ import BaseUserPhoto from '../components/ui/BaseUserPhoto.vue'
 import BaseLightBox from '../components/ui/BaseLightBox.vue'
 import PostItem from '../components/PostItem.vue'
 import PostFilter from '../components/PostFilter.vue'
-import myFollowList from '../components/MyFollowList.vue'
+import MyFollowList from '../components/MyFollowList.vue'
 import UploadPost from '../components/UploadPost.vue'
 export default {
   components: {
@@ -97,7 +97,7 @@ export default {
     BaseLightBox,
     PostItem,
     PostFilter,
-    myFollowList,
+    MyFollowList,
     UploadPost
   },
   setup () {
