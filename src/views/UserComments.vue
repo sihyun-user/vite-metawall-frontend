@@ -28,7 +28,8 @@
 
     <!-- light-box -->
     <base-lightBox v-if="isShowPost" title="查看貼文" @close="handleClose">
-      <post-item
+      <p v-if="!post" class="deletePostMsg">目前無法查看此貼文，貼文已刪除或系統忙碌中</p>
+      <post-item v-else
         :post-id="post._id"
         :user="post.user"
         :likes="post.likes"
@@ -51,7 +52,6 @@
         </div>
       </div>
     </base-lightBox>
-    <!-- //TODO: 刪除貼文時(沒有貼文卻還有留言)呈現畫面 -->
   </section>
   <base-spinner v-else></base-spinner>
 </template>
