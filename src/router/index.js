@@ -20,12 +20,12 @@ const routes = [
     component: UserCenter,
     children: [
       { path: '/posts-wall', component: PostsWall, meta: { requiresAuth: true }},
-      { path: '/user-wall', component: UserWall },
-      { path: '/user-follow', component: UserFollows },
-      { path: '/user-comment', component: UserComments },
-      { path: '/user-favorite', component: UserFavoritePosts },
-      { path: '/edit-userinfo', component: EditUserInfo },
-      { path: '/upload-userpost', component: UploadUserPost },
+      { path: '/user-wall', component: UserWall, meta: { requiresAuth: true } },
+      { path: '/user-follow', component: UserFollows, meta: { requiresAuth: true } },
+      { path: '/user-comment', component: UserComments, meta: { requiresAuth: true } },
+      { path: '/user-favorite', component: UserFavoritePosts, meta: { requiresAuth: true } },
+      { path: '/edit-userinfo', component: EditUserInfo, meta: { requiresAuth: true } },
+      { path: '/upload-userpost', component: UploadUserPost, meta: { requiresAuth: true } },
       { path: '/:notFound(.*)', redirect: '/auth' }
     ]
   },
