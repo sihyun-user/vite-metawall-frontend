@@ -68,8 +68,8 @@ export default createStore({
       }
     },
     handleAuth(context, payload) {
-      const expiresIn = 1000 * 60 * 1 // 分鐘
-      // const expiresIn = 1000 * 3600 * 24 * 7 // 7day
+      // const expiresIn = 1000 * 60 * 1 // 分鐘
+      const expiresIn = 1000 * 3600 * 24 * 7 // 7day
       const expirationDate = new Date().getTime() + expiresIn
       const { token, userId } = payload
 
