@@ -29,7 +29,8 @@
     <!-- light-box -->
     <base-lightBox v-if="isShowPost" title="查看貼文" @close="handleClose">
       <p v-if="!post" class="deletePostMsg">目前無法查看此貼文，貼文已刪除或系統忙碌中</p>
-      <post-item v-else
+      <post-item
+        v-else
         :post-id="post._id"
         :user="post.user"
         :likes="post.likes"

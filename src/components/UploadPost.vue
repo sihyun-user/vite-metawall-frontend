@@ -118,7 +118,6 @@ export default {
 
     return {
       imageFile,
-      imageModel,
       contentModel,
       imageModel,
       errorMsg,
