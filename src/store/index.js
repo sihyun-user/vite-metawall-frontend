@@ -43,6 +43,7 @@ export default createStore({
     logout(context) {
       localStorage.removeItem('token')
       localStorage.removeItem('userId')
+      localStorage.removeItem('tokenExpiration')
       
       context.commit('clearInfo')
       router.replace('/auth')
@@ -50,14 +51,33 @@ export default createStore({
     tryLogin(context) {
       const token = localStorage.getItem('token')
       const userId = localStorage.getItem('userId')
+      const tokenExpiration = localStorage.getItem('tokenExpiration')
+      
+      const expiresIn = +tokenExpiration - new Date().getTime()
+    
+      if (expiresIn < 0) {
+        return context.commit('isLogin', false)
+      }
 
-      if(token && userId){
+      if (token && userId) {
         context.commit('isLogin', true)
         context.commit('setUser', {
           token: token,
           userId: userId,
         })
       }
+    },
+    handleAuth(context, payload) {
+      const expiresIn = 1000 * 60 * 1 // 分鐘
+      // const expiresIn = 1000 * 3600 * 24 * 7 // 7day
+      const expirationDate = new Date().getTime() + expiresIn
+      const { token, userId } = payload
+
+      localStorage.setItem('token', token)
+      localStorage.setItem('userId', userId)
+      localStorage.setItem('tokenExpiration', expirationDate)
+
+      context.commit('setUser', { token, userId })
     },
     // 登入
     async login(context, payload) {
@@ -68,18 +88,16 @@ export default createStore({
         const { email, password } = payload
         
         const res = await axios.post(api, { email, password })
-        
         const data = res.data.data
-        context.commit('isLogin', true)
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('userId', data.user._id)
-        context.commit('setUser', {
-          token: data.token,
-          userId: data.user._id,
-        })
 
-        context.commit('setIsLoading', false)
+        context.dispatch('handleAuth', {
+          token: data.token,
+          userId: data.user._id
+        })
         context.dispatch('getUserInfo')
+        
+        context.commit('isLogin', true)
+        context.commit('setIsLoading', false)
         checkConsole('登入成功', res.data)
         router.push('posts-wall')
         alert('登入成功')
