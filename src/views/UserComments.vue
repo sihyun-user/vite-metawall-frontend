@@ -28,7 +28,7 @@
 
     <!-- light-box -->
     <base-lightBox v-if="isShowPost" title="查看貼文" @close="handleClose">
-      <p v-if="!post" class="deletePostMsg">目前無法查看此貼文，貼文已刪除或系統忙碌中</p>
+      <p v-if="!post" class="deletePostMsg">目前無法查看此貼文，貼文已被刪除</p>
       <post-item
         v-else
         :post-id="post._id"
@@ -64,6 +64,7 @@ import BaseCaption from '../components/ui/BaseCaption.vue'
 import BaseLightBox from '../components/ui/BaseLightBox.vue'
 import BaseFormatTime from '../components/ui/BaseFormatTime.vue'
 import PostItem from '../components/PostItem.vue'
+import useChangePost from '../hooks/changePost.js'
 export default {
   components: {
     BaseCard,
@@ -81,6 +82,7 @@ export default {
     const isShowPost = ref(false)
     const isShowEdit = ref(false)
     
+    const { changeCommentLikes } = useChangePost()
     const isLoading = computed(() => store.getters.isLoading)
 
     // 取得個人留言名單
@@ -114,23 +116,14 @@ export default {
     }
 
     // 更新貼文的讚(同步更新DOM)
-    function changePostLikes (val) {
-      comments.value.find((comment) => {
-        const selectPost = comment.post
-        if (selectPost._id == val.postId) {
-          selectPost.likes = val.newLikes
-        }
-      })
+    function changePostLikes (newData) {
+      changeCommentLikes(comments.value, newData)
     }
 
-    // 更新貼文的留言(同步更新DOM)
-    function changePostComments (val) {
-      comments.value.find((comment) => {
-        const selectPost = comment.post
-        if (selectPost._id == val.postId) {
-          selectPost.comments = val.comments
-        }
-      })
+    // 更新貼文的留言(重新取得留言名單)
+    function changePostComments () {
+      handleClose()
+      getCommentPostList()
     }
 
     function getPostLightBox(postData) {

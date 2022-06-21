@@ -92,6 +92,7 @@ import PostItem from '../components/PostItem.vue'
 import PostFilter from '../components/PostFilter.vue'
 import FollowList from '../components/FollowList.vue'
 import UploadPost from '../components/UploadPost.vue'
+import useChangePost from '../hooks/changePost.js'
 export default {
   components: {
     BaseCard,
@@ -128,6 +129,7 @@ export default {
       userId: ''
     }
 
+    const { changeLikes, changeComments } = useChangePost()
     const { followers, following } = toRefs(user)
 
     const userId = computed(() => store.getters.userId)
@@ -229,21 +231,13 @@ export default {
     }
 
     // 更新貼文的讚(同步更新DOM)
-    function changePostLikes (val) {
-      posts.value.find((post) => {
-        if (post._id == val.postId) {
-          post.likes = val.newLikes
-        }
-      })
+    function changePostLikes (newData) {
+      changeLikes(posts.value, newData)
     }
 
     // 更新貼文的留言(同步更新DOM)
-    function changePostComments (val) {
-      posts.value.find((post) => {
-        if (post._id == val.postId) {
-          post.comments = val.comments
-        }
-      })
+    function changePostComments (newData) {
+      changeComments(posts.value, newData)
     }
 
     function handleShow (modeVal) {

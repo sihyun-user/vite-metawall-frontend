@@ -59,6 +59,7 @@ import BaseUserPhoto from '../components/ui/BaseUserPhoto.vue'
 import BaseFormatTime from '../components/ui/BaseFormatTime.vue'
 import BaseLightBox from '../components/ui/BaseLightBox.vue'
 import PostItem from '../components/PostItem.vue'
+import useChangePost from '../hooks/changePost.js'
 export default {
   components: {
     BaseCaption, 
@@ -74,6 +75,7 @@ export default {
     const postObj = ref({})
     const isShowPost = ref(false)
 
+    const { changeComments } = useChangePost()
     const isLoading = computed(() => store.getters.isLoading)
 
     // 取得個人按讚名單
@@ -91,17 +93,13 @@ export default {
 
     // 更新貼文的讚(重新取得按讚名單)
     function changePostLikes () {
-      isShowPost.value = false
+      handleClose()
       getLikePostList()
     }
 
      // 更新貼文的留言(同步更新DOM)
-    function changePostComments (val) {
-      posts.value.find((post) => {
-        if (post._id == val.postId) {
-          post.comments = val.comments
-        }
-      })
+    function changePostComments (newData) {
+      changeComments(posts.value, newData)
     }
 
     function switchLightBox(data) {

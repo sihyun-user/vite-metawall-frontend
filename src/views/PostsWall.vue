@@ -29,6 +29,7 @@ import { useStore } from 'vuex'
 import PostItem from '../components/PostItem.vue'
 import PostFilter from '../components/PostFilter.vue'
 import BaseCard from '../components/ui/BaseCard.vue'
+import useChangePost from '../hooks/changePost.js'
 export default {
   components: {
     PostItem, 
@@ -43,6 +44,7 @@ export default {
       content: ''
     }
 
+    const { changeLikes, changeComments } = useChangePost()
     const isLoading = computed(() => store.getters.isLoading)
 
     // 搜尋貼文
@@ -58,21 +60,13 @@ export default {
     }
 
     // 更新貼文的讚(同步更新DOM)
-    function changePostLikes (val) {
-      posts.value.find((post) => {
-        if (post._id == val.postId) {
-          post.likes = val.newLikes
-        }
-      })
+    function changePostLikes (newData) {
+      changeLikes(posts.value, newData)
     }
 
     // 更新貼文的留言(同步更新DOM)
-    function changePostComments (val) {
-      posts.value.find((post) => {
-        if (post._id == val.postId) {
-          post.comments = val.comments
-        }
-      })
+    function changePostComments (newData) {
+      changeComments(posts.value, newData)
     }
 
     getPosts()
