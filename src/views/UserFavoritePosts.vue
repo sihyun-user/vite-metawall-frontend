@@ -9,7 +9,9 @@
         </div>
         <div class="user__info-wrap">
           <h3 class="user__info-name">
-            <router-link to="/">{{ post.user.name }}</router-link>
+            <router-link :to="{ path: '/user-wall', query: { userId: post.user._id } }">
+              {{ post.user.name }}
+            </router-link>
           </h3>
           <span class="user__info-time">
             按讚時間

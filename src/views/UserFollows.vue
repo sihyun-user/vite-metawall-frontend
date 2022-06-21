@@ -9,7 +9,7 @@
         </div>
         <div class="user__info-wrap">
           <h3 class="user__info-name">
-            <router-link :to="{ path: '/user-wall', query: { userId: follow.user._id }}">
+            <router-link :to="{ path: '/user-wall', query: { userId: follow.user._id } }">
               {{ follow.user.name }}
             </router-link>
           </h3>
