@@ -6,7 +6,9 @@
 <script>
 export default {
   props: {
-    userPhoto: String
+    userPhoto: {
+      type: String
+    }
   }
 }
 </script>

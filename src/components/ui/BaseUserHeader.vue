@@ -24,8 +24,12 @@ export default {
     BaseFormatTime
   },
   props: {
-    user: Object,
-    createdAt: String
+    user: {
+      type: Object
+    },
+    createdAt: {
+      type: String
+    }
   },
   setup(props) {
     const { _id, name, photo } = toRefs(props.user);

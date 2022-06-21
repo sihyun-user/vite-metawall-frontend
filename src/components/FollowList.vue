@@ -20,8 +20,12 @@ export default {
     BaseUserPhoto
   },
   props: {
-    follows:  Object,
-    select: String
+    follows: {
+      type: Array
+    },
+    select: {
+      type: String
+    }
   },
   setup(props) {
     const { select } = toRefs(props)

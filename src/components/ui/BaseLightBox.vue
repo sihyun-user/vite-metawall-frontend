@@ -14,7 +14,9 @@
 <script>
 export default {
   props: {
-    title: String
+    title: {
+      type: String
+    }
   },
   emits: ['close'],
   setup(_, context) {

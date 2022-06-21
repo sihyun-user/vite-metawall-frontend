@@ -58,14 +58,30 @@ export default {
     BaseUserPhoto
   },
   props: {
-    postId: String,
-    user: Object,
-    likes: Array,
-    content: String,
-    postImage: String,
-    comments: Object,
-    createdAt: String,
-    showComments: Boolean
+    postId: {
+      type: String
+    },
+    user: {
+      type: Object
+    },
+    likes: {
+      type: Array
+    },
+    content: {
+      type: String
+    },
+    postImage: {
+      type: String
+    },
+    comments: {
+      type: Array
+    },
+    createdAt: {
+      type: String
+    },
+    showComments: {
+      type: Boolean
+    }
   },
   emits: ['changeLikes', 'changeComments'],
   setup (props, context) {
