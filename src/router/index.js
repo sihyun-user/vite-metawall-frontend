@@ -25,8 +25,7 @@ const routes = [
       { path: '/user-comment', component: UserComments, meta: { requiresAuth: true } },
       { path: '/user-favorite', component: UserFavoritePosts, meta: { requiresAuth: true } },
       { path: '/edit-userinfo', component: EditUserInfo, meta: { requiresAuth: true } },
-      { path: '/upload-userpost', component: UploadUserPost, meta: { requiresAuth: true } },
-      { path: '/:notFound(.*)', redirect: '/auth' }
+      { path: '/upload-userpost', component: UploadUserPost, meta: { requiresAuth: true } }
     ]
   },
   { path: '/:notFound(.*)', redirect: '/auth' }
