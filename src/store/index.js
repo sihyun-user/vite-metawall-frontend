@@ -3,6 +3,7 @@ import router from '../router/index'
 import axios from 'axios'
 import { checkConsole } from '../service/helpers'
 import createPersistedState from 'vuex-persistedstate'
+import ws from './ws';
 
 export default createStore({
   plugins: [createPersistedState()],
@@ -587,4 +588,5 @@ export default createStore({
       return state.errorMsg
     }
   },
+  modules: { ws }
 })
