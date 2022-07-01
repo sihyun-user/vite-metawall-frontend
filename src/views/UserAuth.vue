@@ -48,18 +48,19 @@
 
 <script>
 import { ref, computed } from 'vue'
-import { useStore } from 'vuex'
+import { useStore } from '../store/pinia'
+// import { storeToRefs } from 'pinia'
 export default {
   setup () {
     const store = useStore()
     const mode = ref('login')
     const name = ref('')
-    const email = ref('')
-    const password = ref('')
+    const email = ref('yuri@gmail.com')
+    const password = ref('yuri123456')
     const confirmPassword = ref('')
 
-    const isLoading = computed(() => store.getters.isLoading)
-    const errorMsg = computed(() => store.getters.errorMsg)
+    const isLoading = computed(() => store.isLoading)
+    const errorMsg = computed(() => store.errorMsg)
 
     const switchModeCaption = computed(() => {
       if (mode.value === 'login') {
@@ -84,13 +85,13 @@ export default {
 
     // 登入
     function login () {
-      store.commit('setErrorMag', '')
+      store.$patch({ errorMsg: '' })
 
       if (email.value === '' || !email.value.includes('@')) {
-        store.commit('setErrorMag', 'E-mail格式錯誤')
+        store.$patch({ errorMsg: 'E-mail格式錯誤' })
         return
       } else if (password.value.length < 8) {
-        store.commit('setErrorMag', '密碼字數低於8碼')
+        store.$patch({ errorMsg: '密碼字數低於8碼' })
         return
       }
 
@@ -99,7 +100,7 @@ export default {
         password: password.value
       }
 
-      store.dispatch('login', payload)
+      store.login('login', payload)
     }
 
     // 註冊

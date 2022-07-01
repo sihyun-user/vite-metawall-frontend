@@ -15,6 +15,8 @@
     "core-js": "^3.22.8",
     "express": "^4.18.1",
     "moment": "^2.29.3",
+    "pinia": "^2.0.14",
+    "pinia-plugin-persistedstate": "^1.6.1",
     "vue": "^3.2.25",
     "vue-axios": "^3.4.1",
     "vue-router": "^4.0.13",

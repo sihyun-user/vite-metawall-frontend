@@ -27,7 +27,7 @@
 
 <script>
 import { computed } from 'vue'
-import { useStore } from 'vuex'
+import { useStore } from '../../store/pinia'
 import BaseUserPhoto from '../ui/BaseUserPhoto.vue'
 export default {
   components: {
@@ -36,15 +36,15 @@ export default {
   setup() {
     const store = useStore()
 
-    const hasUserInfo = computed(() => store.getters.hasUserInfo)
-    const userInfo = computed(() => store.getters.userInfo)
+    const hasUserInfo = computed(() => store.hasUserInfo)
+    const userInfo = computed(() => store.userInfo)
 
     const curUserWallLink = computed(() => {
-      return `/user-wall?userId=${store.getters.userId}`
+      return `/user-wall?userId=${store.userId}`
     })
     
     function logout () {
-      store.dispatch('logout')
+      store.logout()
     }
 
     return {
