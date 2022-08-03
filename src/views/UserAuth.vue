@@ -79,7 +79,7 @@ export default {
     })
 
     function switchAuthMode () {
-      store.commit('setErrorMag', '')
+      clearForm()
       mode.value === 'login' ? mode.value = 'signup' : mode.value = 'login'
     }
 
@@ -88,11 +88,9 @@ export default {
       store.$patch({ errorMsg: '' })
 
       if (email.value === '' || !email.value.includes('@')) {
-        store.$patch({ errorMsg: 'E-mail格式錯誤' })
-        return
+        return store.$patch({ errorMsg: 'E-mail格式錯誤' })
       } else if (password.value.length < 8) {
-        store.$patch({ errorMsg: '密碼字數低於8碼' })
-        return
+        return store.$patch({ errorMsg: '密碼字數低於8碼' })
       }
 
       const payload = {
@@ -100,21 +98,21 @@ export default {
         password: password.value
       }
 
-      store.login('login', payload)
+      store.login(payload)
     }
 
     // 註冊
     async function signup () {
-      store.commit('setErrorMag', '')
+      store.$patch({ errorMsg: '' })
       
       if (name.value.length < 2) {
         return store.commit('setErrorMag', '暱稱至少 2 個字元以上')
       } else if (email.value === '' || !email.value.includes('@')) {
-        return store.commit('setErrorMag', 'E-mail格式錯誤')
+        return store.$patch({ errorMsg: 'E-mail格式錯誤' })
       } else if (password.value.length < 8) {
-        return store.commit('setErrorMag', '密碼字數低於8碼')
+        return  store.$patch({ errorMsg: '密碼字數低於8碼' })
       } else if (password.value !== confirmPassword.value) {
-        return store.commit('setErrorMag', '密碼不一致')
+        return  store.$patch({ errorMsg: '密碼不一致' })
       }
 
       const payload = {
@@ -124,7 +122,7 @@ export default {
         confirmPassword: confirmPassword.value
       }
     
-      const result = await store.dispatch('signup', payload)
+      const result = await store.signup(payload)
       if (result) {
         clearForm()
         mode.value = 'login'
@@ -137,7 +135,7 @@ export default {
       email.value = ''
       password.value = ''
       confirmPassword.value = ''
-      store.commit('setErrorMag', '')
+      store.$patch({ errorMsg: '' })
     }
 
     return {

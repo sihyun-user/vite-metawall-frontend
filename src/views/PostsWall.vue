@@ -25,7 +25,7 @@
 
 <script>
 import { computed, ref } from 'vue'
-import { useStore } from 'vuex'
+import { useStore } from '../store/pinia'
 import PostItem from '../components/PostItem.vue'
 import PostFilter from '../components/PostFilter.vue'
 import BaseCard from '../components/ui/BaseCard.vue'
@@ -45,7 +45,7 @@ export default {
     }
 
     const { changeLikes, changeComments } = useChangePost()
-    const isLoading = computed(() => store.getters.isLoading)
+    const isLoading = computed(() => store.isLoading)
 
     // 搜尋貼文
     function searchPosts (val) {
@@ -55,7 +55,7 @@ export default {
 
     // 取得貼文列表
     async function getPosts () {
-      const result = await store.dispatch('getPosts', sort)
+      const result = await store.getPosts(sort)
       posts.value = result
     }
 
