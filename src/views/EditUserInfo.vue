@@ -67,7 +67,7 @@
 </template>
 <script>
 import { ref, computed, reactive } from 'vue'
-import { useStore } from 'vuex'
+import { useStore } from '../store/pinia'
 import BaseCaption from '../components/ui/BaseCaption.vue'
 import BaseUserPhoto from '../components/ui/BaseUserPhoto.vue'
 export default {
@@ -90,13 +90,13 @@ export default {
       confirmPassword: ''
     })
 
-    const userInfo = computed(() => store.getters.userInfo)
-    const errorMsg = computed(() => store.getters.errorMsg)
-    const isLoading = computed(() => store.getters.isLoading)
+    const userInfo = computed(() => store.userInfo)
+    const errorMsg = computed(() => store.errorMsg)
+    const isLoading = computed(() => store.isLoading)
 
     function switchModeCaption (val) {
       mode.value = val
-      store.commit('setErrorMag', '')
+      store.$patch({ errorMsg: '' })
     }
 
     // 預覽圖檔
@@ -109,20 +109,20 @@ export default {
 
     // 編輯會員資料
     async function updateUserInfo () {
-      store.commit('setErrorMag', '')
+      store.$patch({ errorMsg: '' })
       if (profile.name.length < 2) {
-        return store.commit('setErrorMag', '暱稱字數低於2碼')
+        return store.$patch({ errorMsg: '暱稱字數低於2碼' })
       }
 
       // 上傳圖片 & 更新會員資料
       if (!imageFile.value) {
-        await store.dispatch('updateUserInfo', profile)
+        await store.updateUserInfo(profile)
       } else {
-        const imageUrl = await store.dispatch('uploadImage', imageFile.value)
+        const imageUrl = await store.uploadImage(imageFile.value)
         if (!imageUrl) return
 
         profile.photo = imageUrl
-        await store.dispatch('updateUserInfo', profile)
+        await store.updateUserInfo(profile)
       }
       
       setUsetInfo()
@@ -130,14 +130,14 @@ export default {
 
     // 更新密碼
     async function updatePassword() {
-      store.commit('setErrorMag', '')
+      store.$patch({ errorMsg: '' })
       if (pwd.password !== pwd.confirmPassword) {
-        return store.commit('setErrorMag', '密碼不一致')
+        return store.$patch({ errorMsg: '密碼不一致' })
       }
       if (pwd.password.length < 8) {
-        return store.commit('setErrorMag', '密碼字數低於8碼')
+        return store.$patch({ errorMsg: '密碼字數低於8碼' })
       }
-      const result = await store.dispatch('updatePassword', pwd)
+      const result = await store.updatePassword(pwd)
       if (result) switchModeCaption('profile')
     }
 
